@@ -1,4 +1,6 @@
-export const TopNav = () => {
+import { NavLink } from './NavLink';
+
+export function TopNav() {
   return (
     <nav className="bg-gray-800 p-4">
       <div className="max-w-7xl mx-auto">
@@ -6,31 +8,20 @@ export const TopNav = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <a href="#" className="text-white font-bold text-xl">
-              Your Logo
+              Budget
             </a>
           </div>
           {/* Navigation Links */}
           <div className="hidden md:block">
             <ul className="flex space-x-4">
               <li>
-                <a href="#" className="text-white hover:text-gray-300">
-                  Home
-                </a>
+                <NavLink href="/" label="Home" />
               </li>
               <li>
-                <a href="#" className="text-white hover:text-gray-300">
-                  About
-                </a>
+                <NavLink href="/budget" label="My Budget" />
               </li>
               <li>
-                <a href="#" className="text-white hover:text-gray-300">
-                  Services
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-white hover:text-gray-300">
-                  Contact
-                </a>
+                <NavLink href="/login" label="Login" />
               </li>
             </ul>
           </div>
@@ -57,4 +48,4 @@ export const TopNav = () => {
       </div>
     </nav>
   );
-};
+}

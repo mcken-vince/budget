@@ -13,6 +13,12 @@ export class User extends BaseModel {
     @Column({type: DataType.STRING(255)})    
     email: string;
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    password: string;
+
     @Max(255)
     @Column({type: DataType.STRING(255)})
     firstName: string;

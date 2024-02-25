@@ -37,7 +37,7 @@ export class TransactionEntity extends BaseEntity {
   @Column({
     type: DataType.DATE,
     allowNull: false,
-    defaultValue: Sequelize.fn('getdate'),
+    defaultValue: Sequelize.fn('now'),
   })
   date: Date;
 

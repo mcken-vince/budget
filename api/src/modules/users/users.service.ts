@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { User } from '../../models';
+import { UserEntity } from '../../entities';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USER_REPOSITORY') private readonly _userRepository: typeof User
+    @Inject('USER_REPOSITORY')
+    private readonly _userRepository: typeof UserEntity
   ) {}
 
   async create(user: any): Promise<any> {

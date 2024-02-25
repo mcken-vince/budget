@@ -1,5 +1,0 @@
-export * from './base.model'
-export * from './budget.model'
-export * from './user.model'
-export * from './category.model'
-export * from './transaction.model'

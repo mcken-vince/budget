@@ -1,6 +1,11 @@
 import { Sequelize } from 'sequelize-typescript';
 import { databaseConfig } from './database.config';
-import { User, Budget, Transaction, Category } from '../models';
+import {
+  UserEntity,
+  BudgetEntity,
+  TransactionEntity,
+  CategoryEntity,
+} from '../entities';
 
 export const databaseProviders = [
   {
@@ -21,8 +26,13 @@ export const databaseProviders = [
           config = databaseConfig.development;
       }
       const sequelize = new Sequelize(config);
-      sequelize.addModels([User, Budget, Transaction, Category]);
-      // await sequelize.sync({ force: true });
+      sequelize.addModels([
+        UserEntity,
+        BudgetEntity,
+        TransactionEntity,
+        CategoryEntity,
+      ]);
+      await sequelize.sync({ force: true });
       return sequelize;
     },
   },

@@ -2,20 +2,36 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import { Input } from './Input';
+import * as yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 export const RegisterForm = () => {
+  const schema = yup
+    .object()
+    .shape({
+      firstName: yup.string().required('First name is required.'),
+      lastName: yup.string().required('Last name is required.'),
+      email: yup.string().required('Email is required.'),
+      password: yup
+        .string()
+        .min(6, 'Password must contain at least 6 characters.')
+        .required('Password is required.'),
+    })
+    .typeError('Invalid value');
+
+  const { control, handleSubmit } = useForm({
+    defaultValues: { firstName: '', lastName: '', email: '', password: '' },
+    resolver: yupResolver(schema),
+  });
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Here you can handle form submission, like sending data to the server
-    console.log('First Name:', firstName);
-    console.log('Last Name:', lastName);
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const onSubmitHandler = (data: any) => {
+    console.log({ data });
   };
 
   return (
@@ -26,75 +42,70 @@ export const RegisterForm = () => {
             Create an account
           </h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="mt-8 space-y-6"
+          onSubmit={handleSubmit(onSubmitHandler)}
+        >
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label htmlFor="first-name" className="sr-only">
-                  First Name
-                </label>
-                <input
-                  id="first-name"
-                  name="first-name"
-                  type="text"
-                  autoComplete="given-name"
-                  required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="First Name"
-                />
-              </div>
-              <div>
-                <label htmlFor="last-name" className="sr-only">
-                  Last Name
-                </label>
-                <input
-                  id="last-name"
-                  name="last-name"
-                  type="text"
-                  autoComplete="family-name"
-                  required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Last Name"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label="First Name"
+                    name="first-name"
+                    autoComplete="given-name"
+                    required
+                    placeholder="First Name"
+                  />
+                )}
+              />
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label="Last Name"
+                    name="last-name"
+                    autoComplete="family-name"
+                    required
+                    placeholder="Last Name"
+                  />
+                )}
               />
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Email address"
+                  name="email"
+                  autoComplete="email"
+                  required
+                  placeholder="Email address"
+                />
+              )}
+            />
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Password"
+                  name="password"
+                  autoComplete="new-password"
+                  required
+                  placeholder="Password"
+                />
+              )}
+            />
           </div>
 
           <div>

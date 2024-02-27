@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { AuthGuard } from '@nestjs/passport';
-import { TransactionEntity } from '../../entities';
-import { User } from '../../decorators/user.decorator';
+import { TransactionEntity } from '../../core/entities';
+import { User } from '../../core/decorators/user.decorator';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('transactions')

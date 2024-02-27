@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { TransactionEntity } from '../../entities';
+import { TransactionEntity } from '../../core/entities';
 
 @Injectable()
 export class TransactionService {

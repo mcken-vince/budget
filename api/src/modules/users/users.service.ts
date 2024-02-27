@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserEntity } from '../../entities';
+import { UserEntity } from '../../core/entities';
 
 @Injectable()
 export class UsersService {
@@ -8,15 +8,15 @@ export class UsersService {
     private readonly _userRepository: typeof UserEntity
   ) {}
 
-  async create(user: any): Promise<any> {
+  async create(user: any): Promise<UserEntity> {
     return await this._userRepository.create(user);
   }
 
-  async findOneByEmail(email: string): Promise<any> {
+  async findOneByEmail(email: string): Promise<UserEntity> {
     return await this._userRepository.findOne({ where: { email } });
   }
 
-  async findOneById(id: number): Promise<any> {
+  async findOneById(id: number): Promise<UserEntity> {
     return await this._userRepository.findOne({ where: { id } });
   }
 }

@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UserEntity } from '../../core/entities';
 
 @Controller('user')
 export class UsersController {
@@ -16,7 +17,7 @@ export class UsersController {
   // }
 
   @Get('byId')
-  async findOneById(@Body() id: number) {
+  async findOneById(@Body() id: number): Promise<UserEntity> {
     return this._usersService.findOneById(id);
   }
 }

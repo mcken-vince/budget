@@ -7,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { apiFetch } from '../helpers/clients/fetch-client';
-import Image from 'next/image';
 import { Button } from './Button';
 
 export const SignUpForm = () => {
@@ -202,7 +201,7 @@ export const SignUpForm = () => {
                       value={field.value}
                       onChange={field.onChange}
                       label="Password Confirmation"
-                      name="password"
+                      name="passwordConfirmation"
                       type="password"
                       autoComplete="new-password"
                       required

@@ -12,14 +12,9 @@ import { BudgetEntity } from './budget.entity';
 
 @Table({ tableName: 'User' })
 export class UserEntity extends BaseEntity {
-  @Min(5)
-  @Max(255)
-  @Column({ type: DataType.STRING(255), unique: true, allowNull: false })
-  username: string;
-
   @IsEmail
   @Max(255)
-  @Column({ type: DataType.STRING(255), allowNull: false })
+  @Column({ type: DataType.STRING(255), unique: true, allowNull: false })
   email: string;
 
   @Column({

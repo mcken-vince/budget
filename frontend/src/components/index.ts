@@ -8,4 +8,4 @@ export * from './NavLink';
 
 // Forms
 export * from './LoginForm';
-export * from './RegisterForm';
+export * from './SignUpForm';

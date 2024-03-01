@@ -1,5 +1,6 @@
-import { TopNav } from '../components';
 import './global.css';
+import { TopNav } from '../components';
+import Providers from '../providers/Providers';
 
 export const metadata = {
   title: 'Budget',
@@ -14,8 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TopNav />
-        {children}
+        <Providers>
+          <TopNav />
+          {children}
+        </Providers>
       </body>
     </html>
   );

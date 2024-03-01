@@ -12,10 +12,6 @@ export class UserDto {
   readonly email: string;
 
   @IsNotEmpty()
-  @IsEmail()
-  readonly username: string;
-
-  @IsNotEmpty()
   @MinLength(6)
   readonly password: string;
 }

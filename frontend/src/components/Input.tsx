@@ -8,9 +8,9 @@ export interface InputProps {
   value: any;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  required?: boolean;
   type?: InputType;
   autoComplete?: string;
+  error?: string | boolean;
 }
 
 export const Input = ({
@@ -19,9 +19,9 @@ export const Input = ({
   value,
   onChange,
   placeholder,
-  required,
   type = 'text',
   autoComplete,
+  error,
 }: InputProps) => {
   return (
     <div>
@@ -33,12 +33,14 @@ export const Input = ({
         type={type}
         id={name}
         placeholder={placeholder}
-        className="mt-1 p-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+        className={`mt-1 p-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm${
+          error ? ' border-2 border-rose-600' : ''
+        }`}
         value={value}
         onChange={onChange}
-        required={required}
         autoComplete={autoComplete}
       />
+      {error && <p className="text-rose-600 sm:text-sm">{error}</p>}
     </div>
   );
 };

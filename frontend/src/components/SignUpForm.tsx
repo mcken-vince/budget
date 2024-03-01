@@ -29,7 +29,11 @@ export const SignUpForm = () => {
     })
     .typeError('Invalid value');
 
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -129,8 +133,8 @@ export const SignUpForm = () => {
                       label="First Name"
                       name="first-name"
                       autoComplete="given-name"
-                      required
                       placeholder="First Name"
+                      error={errors?.firstName?.message}
                     />
                   )}
                 />
@@ -147,8 +151,8 @@ export const SignUpForm = () => {
                       label="Last Name"
                       name="last-name"
                       autoComplete="family-name"
-                      required
                       placeholder="Last Name"
+                      error={errors?.lastName?.message}
                     />
                   )}
                 />
@@ -166,8 +170,8 @@ export const SignUpForm = () => {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      required
                       placeholder="example@protonmail.com"
+                      error={errors?.email?.message}
                     />
                   )}
                 />
@@ -185,8 +189,8 @@ export const SignUpForm = () => {
                       name="password"
                       type="password"
                       autoComplete="new-password"
-                      required
                       placeholder="Password"
+                      error={errors?.password?.message}
                     />
                   )}
                 />
@@ -204,8 +208,8 @@ export const SignUpForm = () => {
                       name="passwordConfirmation"
                       type="password"
                       autoComplete="new-password"
-                      required
                       placeholder="Password Confirmation"
+                      error={errors?.passwordConfirmation?.message}
                     />
                   )}
                 />

@@ -20,7 +20,11 @@ export const LoginForm = () => {
     })
     .typeError('Invalid value');
 
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       email: '',
       password: '',
@@ -118,14 +122,14 @@ export const LoginForm = () => {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      required
                       placeholder="example@protonmail.com"
+                      error={errors?.email?.message}
                     />
                   )}
                 />
               </div>
 
-              <div className="col-span-6 sm:col-span-3">
+              <div className="col-span-6">
                 <Controller
                   name="password"
                   control={control}
@@ -137,8 +141,8 @@ export const LoginForm = () => {
                       name="password"
                       type="password"
                       autoComplete="new-password"
-                      required
                       placeholder="Password"
+                      error={errors?.password?.message}
                     />
                   )}
                 />

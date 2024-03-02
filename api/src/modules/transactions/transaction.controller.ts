@@ -9,34 +9,42 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { AuthGuard } from '@nestjs/passport';
 import { TransactionEntity } from '../../core/entities';
 import { User } from '../../core/decorators/user.decorator';
+import { TransactionDto } from '../../core/dto/transaction.dto';
+import { AuthGuard } from '../../core/guards/auth.guard';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard)
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly _transactionService: TransactionService) {}
 
   @Get()
-  findAll(@User() user: any) {
+  findAll(@User() user: any): Promise<TransactionEntity[]> {
+    console.log({ user });
     return this._transactionService.findAll(user.id);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number, @User() user) {
+  async findOne(
+    @Param('id') id: number,
+    @User() user
+  ): Promise<TransactionEntity> {
     return this._transactionService.findOne(id, user.id);
   }
 
   @Post()
-  async create(@Body() input: any, @User() user): Promise<TransactionEntity> {
+  async create(
+    @Body() input: TransactionDto,
+    @User() user
+  ): Promise<TransactionEntity> {
     return this._transactionService.create(input, user.id);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: number,
-    @Body() input: any,
+    @Body() input: TransactionDto,
     @User() user: any
   ): Promise<TransactionEntity> {
     return this._transactionService.update(id, input, user.id);

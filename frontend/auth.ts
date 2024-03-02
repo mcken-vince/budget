@@ -67,25 +67,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
     },
     async jwt({ token, user, account, profile, session }) {
-      console.log('jwt callback');
-      if (account) {
-        token.auth_token = await signJwt({
-          sub: token.sub,
-          id_token: account.id_token,
-          access_token: account.access_token,
-          expires_at: account.expires_at,
-        });
-      }
+      console.log('jwt callback', { token, user, account });
+      // if (account) {
+      //   token.auth_token = signJwt({
+      //     user: token.user,
+      //     sub: token.sub,
+      //     id_token: account.id_token,
+      //     access_token: account.access_token,
+      //     expires_at: account.expires_at,
+      //   });
+      // }
       if (user) {
-        return {
-          ...token,
-          user: {
-            id: parseInt(user.id + ''),
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email + '',
-          },
+        token.user = {
+          id: parseInt(user.id + ''),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email + '',
         };
+        token.auth_token = signJwt(token);
       }
       return token;
     },
@@ -114,8 +113,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-export const signJwt = async (payload: any, expiresIn = '1d') => {
-  const token = await jwt.sign(payload, process.env.JWTKEY as string, {
+export const signJwt = (payload: any, expiresIn = '1d') => {
+  const token = jwt.sign(payload, process.env.JWTKEY as string, {
     // algorithm: "HS512",
     expiresIn,
   });

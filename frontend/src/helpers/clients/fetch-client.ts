@@ -8,6 +8,9 @@ export const apiFetch = async (endpoint: string, options?: ApiFetchOptions) => {
         method: options?.method || 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...(options?.token
+            ? { Authorization: `Bearer ${options.token}` }
+            : {}),
         },
         body: options?.data ? JSON.stringify(options.data) : null,
       }
@@ -23,4 +26,5 @@ export const apiFetch = async (endpoint: string, options?: ApiFetchOptions) => {
 export interface ApiFetchOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   data?: Record<string, any>;
+  token?: string;
 }

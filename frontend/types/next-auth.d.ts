@@ -1,12 +1,12 @@
 import {
-  Session as SessionInterface,
+  DefaultSession,
   User as UserInterface,
   JWT as JWTInterface,
 } from 'next-auth';
 
 declare module 'next-auth' {
-  interface Session extends SessionInterface {
-    user: {
+  interface Session {
+    user: DefaultSession['user'] & {
       id: number;
       firstName: string;
       lastName: string;
@@ -20,7 +20,8 @@ declare module 'next-auth' {
     firstName: string;
     lastName: string;
   }
-
+}
+declare module 'next-auth/jwt' {
   interface JWT extends JWTInterface {
     token: string;
     user: {

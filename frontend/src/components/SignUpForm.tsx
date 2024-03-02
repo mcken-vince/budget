@@ -8,9 +8,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { apiFetch } from '../helpers/clients/fetch-client';
 import { Button } from './Button';
+import { useSession } from 'next-auth/react';
 
 export const SignUpForm = () => {
   const router = useRouter();
+  const { status } = useSession();
+  if (status === 'authenticated') router.push('/');
+
   const schema = yup
     .object()
     .shape({

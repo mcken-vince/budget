@@ -5,10 +5,15 @@ import { Input } from './Input';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { Button } from './Button';
+import { useRouter } from 'next/navigation';
 
 export const LoginForm = () => {
+  const router = useRouter();
+  const { status } = useSession();
+  if (status === 'authenticated') router.push('/');
+
   const schema = yup
     .object()
     .shape({

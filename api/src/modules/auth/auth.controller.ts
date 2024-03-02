@@ -1,22 +1,23 @@
-import { Controller, Body, Post, UseGuards, Request } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { DoesUserExist } from '../../core/guards/doesUserExist.guard';
-// import { UserDto } from '../users/dto/user.dto';
+import { DoesUserExist } from '../../core/guards/does-user-exist.guard';
+import { UserDto } from '../../core/dto/user.dto';
+import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return await this.authService.login(req.user);
+  async login(@Body() user) {
+    const response = await this.authService.login(user);
+    return response;
   }
 
   @UseGuards(DoesUserExist)
   @Post('signup')
-  async signUp(@Body() user: any) {
+  async signUp(@Body() user: UserDto) {
     return await this.authService.create(user);
   }
 }

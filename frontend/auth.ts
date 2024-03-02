@@ -2,10 +2,12 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import jwt from 'jsonwebtoken';
 import { apiFetch } from './src/helpers/clients/fetch-client';
+import { encode, decode } from 'next-auth/jwt';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: 'Yo/0duPLAErkzTcBlgWGWR4eaVyivqU6a+M/ot0fo9c=',
   session: { strategy: 'jwt' },
+  jwt: { encode, decode },
   pages: {
     signIn: '/login',
   },
@@ -14,7 +16,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       name: 'Sign in',
       id: 'credentials',
       credentials: {
-        username: {
+        email: {
           label: 'Email',
           type: 'email',
           placeholder: 'example@example.com',
@@ -22,21 +24,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials.password) {
+        if (!credentials?.email || !credentials.password) {
           return null;
         }
 
         const response = await apiFetch('auth/login', {
           method: 'POST',
-          data: credentials,
+          data: { username: credentials.email, password: credentials.password },
         });
 
         const user = response?.user;
-        console.log('authorize user', { user });
         if (!user) {
           return null;
         }
-
         return {
           id: user.id,
           email: user.email,
@@ -49,28 +49,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, credentials }) {
-      console.log('signIn callback', {
-        user,
-        account,
-        credentials,
-      });
-      const dbUser = await apiFetch(`user/email/${credentials?.username}`);
+      console.log('signIn callback');
+      const dbUser = await apiFetch(`user/email/${credentials?.email}`);
       if (dbUser) {
         user.id = dbUser.id;
         user.firstName = dbUser.firstName;
         user.lastName = dbUser.lastName;
         user.email = dbUser.email;
 
-        return '/';
+        return true;
       } else {
         // Return false to display a default error message
+        return '/login?error=loginError';
         return false;
         // Or you can return a URL to redirect to:
         // return '/unauthorized'
       }
     },
     async jwt({ token, user, account, profile, session }) {
-      console.log('jwt callback', { token, account, profile });
+      console.log('jwt callback');
       if (account) {
         token.auth_token = await signJwt({
           sub: token.sub,
@@ -79,23 +76,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           expires_at: account.expires_at,
         });
       }
-      // if (user) {
-      //   token.user.id = user.id;
-      //   token.user.firstName = user.firstName;
-      //   token.user.lastName = user.lastName;
-      //   token.email = user.email;
-      // }
+      if (user) {
+        return {
+          ...token,
+          user: {
+            id: parseInt(user.id + ''),
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email + '',
+          },
+        };
+      }
       return token;
     },
     async session({ session, token, user }) {
-      console.log('session callback', { session, token, user });
-      // session.user.id = token?.user?.id;
-      // session.user.firstName = token?.user?.firstName;
-      // session.user.lastName = token?.user?.lastName;
-      // session.user.email = token?.email;
+      console.log('session callback');
 
-      session.auth_token = token.auth_token as string;
-      return session;
+      return {
+        ...session,
+        auth_token: token.auth_token,
+        user: {
+          ...session.user,
+          firstName: token?.user?.firstName,
+          lastName: token?.user?.lastName,
+          email: token?.user?.email,
+        },
+      };
     },
     async redirect({ url, baseUrl }) {
       console.log('redirect callback', { url, baseUrl });

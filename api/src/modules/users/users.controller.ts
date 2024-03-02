@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserEntity } from '../../core/entities';
 
 @Controller('user')
 export class UsersController {
@@ -11,13 +10,13 @@ export class UsersController {
   //   return this._usersService.create(input);
   // }
 
-  // @Get('byEmail')
-  // async findOneByEmail(@Body() email: string) {
-  //   return this._usersService.findOneByEmail(email);
-  // }
-
-  @Get('byId')
-  async findOneById(@Body() id: number): Promise<UserEntity> {
-    return this._usersService.findOneById(id);
+  @Get('email/:email')
+  async findOneByEmail(@Param('email') email: string) {
+    return this._usersService.findOneByEmail(email);
   }
+
+  // @Get(':id')
+  // async findOneById(@Param('id') id: number): Promise<UserEntity> {
+  //   return this._usersService.findOneById(id);
+  // }
 }

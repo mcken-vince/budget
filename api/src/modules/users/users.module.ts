@@ -5,7 +5,7 @@ import { usersProviders } from './users.providers';
 
 @Module({
   imports: [],
-  // controllers: [UsersController],
+  controllers: [UsersController],
   providers: [UsersService, ...usersProviders],
   exports: [UsersService],
 })

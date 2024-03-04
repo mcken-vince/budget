@@ -17,7 +17,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <TopNav />
-          {children}
+          <div className="m-1 sm:m-2 md:m-5 lg:m-10">{children}</div>
         </Providers>
       </body>
     </html>

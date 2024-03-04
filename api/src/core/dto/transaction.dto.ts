@@ -4,15 +4,15 @@ export class TransactionDto {
   @IsNotEmpty()
   readonly idUser: number;
 
-  readonly idBudget: number;
+  readonly idBudget?: number;
 
-  readonly idCategory: number;
+  readonly idCategory?: number;
 
   @IsNotEmpty()
   @IsString()
   readonly name: string;
 
-  readonly description: string;
+  readonly description?: string;
 
   @IsDate()
   readonly date: Date;

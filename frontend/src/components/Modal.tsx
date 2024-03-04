@@ -4,7 +4,7 @@ export interface ModalProps {
   show: boolean;
   title: string;
   onClose: () => void;
-  onSubmit?: () => void;
+  onSubmit?: () => Promise<void>;
   children: ReactElement;
   closeButtonText?: string;
 }
@@ -13,6 +13,7 @@ export const Modal = ({
   title,
   show,
   onClose,
+  onSubmit,
   closeButtonText,
   children,
 }: ModalProps) => {
@@ -36,7 +37,10 @@ export const Modal = ({
             <button
               className="text-white bg-yellow-500 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
               type="button"
-              onClick={() => onClose()}
+              onClick={async () => {
+                if (onSubmit) await onSubmit();
+                onClose();
+              }}
             >
               Submit
             </button>

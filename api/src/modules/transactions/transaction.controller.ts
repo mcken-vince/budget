@@ -34,10 +34,7 @@ export class TransactionController {
   }
 
   @Post()
-  async create(
-    @Body() input: TransactionDto,
-    @User() user
-  ): Promise<TransactionEntity> {
+  async create(@Body() input: any, @User() user): Promise<TransactionEntity> {
     return this._transactionService.create(input, user.id);
   }
 

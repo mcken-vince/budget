@@ -14,7 +14,7 @@ export const TransactionsTable = () => {
         const response = await apiFetch('transactions', {
           token: session?.auth_token,
         });
-        setTransactions(response);
+        setTransactions(response ?? []);
       }
     })();
   }, [session?.auth_token]);

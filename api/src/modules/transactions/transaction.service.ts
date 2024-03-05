@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TransactionEntity } from '../../core/entities';
 import { TransactionDto } from '../../core/dto/transaction.dto';
+import { DeleteResponse } from '../../core/dto/delete-response.dto';
 
 @Injectable()
 export class TransactionService {
@@ -31,8 +32,11 @@ export class TransactionService {
     });
   }
 
-  async delete(id: number, idUser: number) {
-    return await this._transactionRepository.destroy({ where: { id, idUser } });
+  async delete(id: number, idUser: number): Promise<DeleteResponse> {
+    const response = await this._transactionRepository.destroy({
+      where: { id, idUser },
+    });
+    return { success: !!response, id };
   }
 
   async update(

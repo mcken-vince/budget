@@ -13,6 +13,7 @@ import { TransactionEntity } from '../../core/entities';
 import { User } from '../../core/decorators/user.decorator';
 import { TransactionDto } from '../../core/dto/transaction.dto';
 import { AuthGuard } from '../../core/guards/auth.guard';
+import { DeleteResponse } from '../../core/dto/delete-response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('transactions')
@@ -51,7 +52,10 @@ export class TransactionController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number, @User() user: any) {
-    await this._transactionService.delete(id, user.id);
+  async remove(
+    @Param('id') id: number,
+    @User() user: any
+  ): Promise<DeleteResponse> {
+    return this._transactionService.delete(id, user.id);
   }
 }

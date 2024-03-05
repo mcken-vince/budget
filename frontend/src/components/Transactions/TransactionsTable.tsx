@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { apiFetch } from '../helpers/clients/fetch-client';
+import { apiFetch } from '../../helpers/clients/fetch-client';
 import { useSession } from 'next-auth/react';
 
 export const TransactionsTable = () => {

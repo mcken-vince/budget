@@ -3,10 +3,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { Button } from './Button';
-import { Input } from './Input';
-import { apiFetch } from '../helpers/clients/fetch-client';
-import { Modal } from './Modal';
+import { Button } from '../Buttons/Button';
+import { Input } from '../Inputs/Input';
+import { apiFetch } from '../../helpers/clients/fetch-client';
+import { Modal } from '../Modal';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -48,7 +48,7 @@ export const TransactionForm = () => {
     console.log({ data });
     const response = await apiFetch('transactions', {
       method: 'POST',
-      data: { idUser: session?.user?.id, ...data },
+      data,
       token: session?.auth_token + '',
     });
     console.log({ response });

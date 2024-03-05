@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { Input } from './Input';
+import { Input } from '../Inputs/Input';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { apiFetch } from '../helpers/clients/fetch-client';
-import { Button } from './Button';
+import { apiFetch } from '../../helpers/clients/fetch-client';
+import { Button } from '../Buttons/Button';
 import { useSession } from 'next-auth/react';
 
 export const SignUpForm = () => {

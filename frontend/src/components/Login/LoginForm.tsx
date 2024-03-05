@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { Input } from './Input';
+import { Input } from '../Inputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { signIn, useSession } from 'next-auth/react';
-import { Button } from './Button';
+import { Button } from '../Buttons/Button';
 import { useRouter } from 'next/navigation';
 
 export const LoginForm = () => {

@@ -2,6 +2,7 @@
 export * from './Buttons/Button';
 export * from './Inputs/Input';
 export * from './Modal';
+export * from './DropdownMenu';
 
 // Navigation
 export * from './Navigation/TopNav';

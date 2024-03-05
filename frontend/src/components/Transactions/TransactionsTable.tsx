@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../helpers/clients/fetch-client';
 import { useSession } from 'next-auth/react';
+import { DropdownMenu } from '../DropdownMenu';
+import { TrashIcon, PencilIcon } from '@heroicons/react/16/solid';
 
 export const TransactionsTable = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -36,6 +38,7 @@ export const TransactionsTable = () => {
             <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               Amount
             </th>
+            <th className="whitespace-nowrap px-4 py-2"></th>
           </tr>
         </thead>
 
@@ -53,6 +56,30 @@ export const TransactionsTable = () => {
               </td>
               <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                 ${transaction.amount}
+              </td>
+              <td>
+                <DropdownMenu
+                  uniqueId={transaction?.id}
+                  items={[
+                    {
+                      label: 'Edit',
+                      icon: PencilIcon,
+                      onClick: () => {
+                        console.log('Edit');
+                      },
+                    },
+                    {
+                      label: 'Delete',
+                      icon: TrashIcon,
+                      onClick: () => {
+                        apiFetch(`transactions/${transaction?.id}`, {
+                          method: 'DELETE',
+                          token: session?.auth_token,
+                        });
+                      },
+                    },
+                  ]}
+                />
               </td>
             </tr>
           ))}

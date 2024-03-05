@@ -1,5 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TransactionEntity } from '../../core/entities';
+import { TransactionDto } from '../../core/dto/transaction.dto';
 
 @Injectable()
 export class TransactionService {
@@ -8,9 +9,12 @@ export class TransactionService {
     private readonly _transactionRepository: typeof TransactionEntity
   ) {}
 
-  async create(transaction: any, idUser: number): Promise<TransactionEntity> {
+  async create(
+    input: TransactionDto,
+    idUser: number
+  ): Promise<TransactionEntity> {
     return await this._transactionRepository.create({
-      ...transaction,
+      ...input,
       idUser,
     });
   }
@@ -33,7 +37,7 @@ export class TransactionService {
 
   async update(
     id: number,
-    input: any,
+    input: TransactionDto,
     idUser: number
   ): Promise<TransactionEntity> {
     let transaction = await this.findOne(id, idUser);

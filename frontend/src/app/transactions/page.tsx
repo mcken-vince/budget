@@ -1,5 +1,4 @@
-import { TransactionForm } from '../../components/TransactionForm';
-import { TransactionsTable } from '../../components/TransactionsTable';
+import { TransactionForm, TransactionsTable } from '../../components';
 
 export default function TransactionsPage() {
   return (

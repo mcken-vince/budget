@@ -11,6 +11,7 @@ import {
 import { BaseEntity } from './base.entity';
 import { BudgetEntity } from './budget.entity';
 import { UserEntity } from './user.entity';
+import { CategoryEntity } from './category.entity';
 
 @Table({ tableName: 'Transaction' })
 export class TransactionEntity extends BaseEntity {
@@ -22,6 +23,7 @@ export class TransactionEntity extends BaseEntity {
   @Column({ type: DataType.INTEGER, allowNull: true })
   idBudget: number;
 
+  @ForeignKey(() => CategoryEntity)
   @Column({ type: DataType.INTEGER, allowNull: true })
   idCategory: number;
 
@@ -47,4 +49,7 @@ export class TransactionEntity extends BaseEntity {
   // Relationships
   @BelongsTo(() => BudgetEntity)
   budget: BudgetEntity;
+
+  @BelongsTo(() => CategoryEntity)
+  category: CategoryEntity;
 }

@@ -28,16 +28,53 @@ export const Popup = ({
     () => ({
       success: <CheckCircleIcon className="h-6 w-6 text-green-600" />,
       error: <XCircleIcon className="h-6 w-6 text-rose-600" />,
-      notify: <InformationCircleIcon className="h-6 w-6 text-blue-600" />,
+      notify: <InformationCircleIcon className="h-6 w-6 text-sky-600" />,
+    }),
+    []
+  );
+  const bgColorMap = useMemo(
+    () => ({
+      success: 'bg-green-100',
+      error: 'bg-rose-100',
+      notify: 'bg-sky-100',
     }),
     []
   );
 
+  // const testArray: { title: string; subText?: string; type: PopupType }[] = [
+  //   {
+  //     title: 'Success!',
+  //     subText: 'Your request has completed successfully.',
+  //     type: 'success',
+  //   },
+  //   {
+  //     title: 'Error!',
+  //     subText: 'There was an error processing your request.',
+  //     type: 'error',
+  //   },
+  //   {
+  //     title: 'Info!',
+  //     subText: 'Here is some info about your request.',
+  //     type: 'notify',
+  //   },
+  // ];
+
+  // const [index, setIndex] = useState(0);
+  // const { title, subText, type } = testArray[index] || {
+  //   title: 'No Match',
+  //   type: 'error',
+  // };
   if (!open) return null;
   return (
     <div
       role="alert"
-      className="rounded-xl border border-gray-100 bg-white p-4 absolute bottom-0 w-full"
+      className={`rounded-xl border border-gray-100 ${bgColorMap[type]} p-4 absolute bottom-0 w-full`}
+      // onClick={() => {
+      //   setIndex((prev) => {
+      //     if (prev >= testArray.length - 1) return 0;
+      //     return prev + 1;
+      //   });
+      // }}
     >
       <div className="flex items-start gap-4">
         {iconMap[type]}

@@ -32,7 +32,7 @@ export const databaseProviders = [
         TransactionEntity,
         CategoryEntity,
       ]);
-      await sequelize.sync({ force: true });
+      // await sequelize.sync({ force: true });
       return sequelize;
     },
   },

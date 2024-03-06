@@ -108,7 +108,7 @@ export const TransactionForm = () => {
                   label="Amount"
                   name="amount"
                   type="number"
-                  error={errors?.description?.message}
+                  error={errors?.amount?.message}
                 />
               )}
             />

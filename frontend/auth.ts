@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import jwt from 'jsonwebtoken';
-import { apiFetch } from './src/helpers/clients/fetch-client';
+import { apiFetch } from '@helpers/clients';
 import { encode, decode } from 'next-auth/jwt';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

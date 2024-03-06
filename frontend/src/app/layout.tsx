@@ -14,10 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-slate-100">
         <Providers>
           <TopNav />
-          <div className="m-1 sm:m-2 md:m-5 lg:m-10">{children}</div>
+          <div className="m-1 sm:m-2 md:m-5 lg:m-10 ">{children}</div>
         </Providers>
       </body>
     </html>

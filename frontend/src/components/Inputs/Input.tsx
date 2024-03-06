@@ -1,6 +1,7 @@
 'use client';
 
 import { ChangeEvent } from 'react';
+import { InputErrorMessage } from './InputErrorMessage';
 
 export interface InputProps {
   name: string;
@@ -10,7 +11,7 @@ export interface InputProps {
   placeholder?: string;
   type?: InputType;
   autoComplete?: string;
-  error?: string | boolean;
+  error?: string;
 }
 
 export const Input = ({
@@ -40,7 +41,7 @@ export const Input = ({
         onChange={onChange}
         autoComplete={autoComplete}
       />
-      {error && <p className="text-rose-600 sm:text-sm">{error}</p>}
+      <InputErrorMessage error={error} />
     </div>
   );
 };

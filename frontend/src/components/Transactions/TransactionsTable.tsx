@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { apiFetch } from '@helpers/clients';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu } from '../DropdownMenu';
@@ -8,30 +7,18 @@ import { TrashIcon, PencilIcon } from '@heroicons/react/16/solid';
 import { formatDate } from '@helpers';
 import { CategorySelector } from '../Category/CategorySelector';
 
-export const TransactionsTable = () => {
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+export interface TransactionsTableProps {
+  transactions: any[];
+  categories: any[];
+  updateTransaction: (newTransaction: any) => void;
+}
+
+export const TransactionsTable = ({
+  transactions,
+  categories,
+  updateTransaction,
+}: TransactionsTableProps) => {
   const { data: session } = useSession();
-
-  useEffect(() => {
-    (async function fetchTransactions() {
-      if (session?.auth_token) {
-        const response = await apiFetch('transactions', {
-          token: session?.auth_token,
-        });
-        setTransactions(Array.isArray(response) ? response : []);
-      }
-    })();
-
-    (async function fetchCategories() {
-      if (session?.auth_token) {
-        const response = await apiFetch('category', {
-          token: session?.auth_token,
-        });
-        setCategories(Array.isArray(response) ? response : []);
-      }
-    })();
-  }, [session?.auth_token]);
 
   return (
     <div className="overflow-x-auto">
@@ -97,6 +84,13 @@ export const TransactionsTable = () => {
                   uniqueId={transaction?.id}
                   category={transaction?.category}
                   categories={categories}
+                  updateTransactionCategory={(category: any) =>
+                    updateTransaction({
+                      ...transaction,
+                      category,
+                      idCategory: category?.id,
+                    })
+                  }
                 />
               </td>
               <td className="whitespace-nowrap px-4 py-2 text-slate-700">

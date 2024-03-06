@@ -1,6 +1,7 @@
 'use client';
 
 import { apiFetch } from '@helpers/clients';
+import { usePopup } from '@hooks';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
@@ -8,12 +9,15 @@ export const CategorySelector = ({
   uniqueId,
   category,
   categories,
+  updateTransactionCategory,
 }: {
   uniqueId: string;
   category: any;
   categories: any[];
+  updateTransactionCategory: (category: any) => void;
 }) => {
   const { data: session } = useSession();
+  const { openPopup } = usePopup();
   const [loading, setLoading] = useState(false);
 
   const updateCategory = async (e: any) => {
@@ -26,8 +30,16 @@ export const CategorySelector = ({
         data: { idCategory },
         token: session?.auth_token,
       });
+      updateTransactionCategory(
+        categories.find((c) => c.id.toString() === idCategory.toString())
+      );
+      openPopup({ title: 'Transaction category updated!', type: 'success' });
     } catch (error) {
       console.log({ error });
+      openPopup({
+        title: 'Error updating transaction category!',
+        type: 'error',
+      });
     } finally {
       setLoading(false);
     }

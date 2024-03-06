@@ -9,8 +9,13 @@ import { apiFetch } from '@helpers/clients';
 import { Modal } from '../Modal';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { usePopup } from '@hooks';
 
-export const TransactionForm = () => {
+export interface TransactionFormProps {
+  addTransaction: (newTransaction: any) => void;
+}
+
+export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
   const createTransactionSchema = yup.object().shape({
     idBudget: yup.number().nullable(),
     name: yup.string().min(1).max(255).required('Name is required.'),
@@ -22,6 +27,7 @@ export const TransactionForm = () => {
       .transform((value) => parseFloat(value.toFixed(2))),
   });
   const { data: session } = useSession();
+  const { openPopup } = usePopup();
 
   const {
     control,
@@ -45,13 +51,20 @@ export const TransactionForm = () => {
   }, [showForm, reset]);
 
   const onSubmitHandler = async (data: any) => {
-    console.log({ data });
-    const response = await apiFetch('transactions', {
-      method: 'POST',
-      data,
-      token: session?.auth_token + '',
-    });
-    console.log({ response });
+    try {
+      console.log({ data });
+      const response = await apiFetch('transactions', {
+        method: 'POST',
+        data,
+        token: session?.auth_token + '',
+      });
+      console.log({ response });
+      addTransaction(response);
+      openPopup({ title: 'New Transaction added!', type: 'success' });
+    } catch (error) {
+      console.log({ error });
+      openPopup({ title: 'Error adding transaction!', type: 'error' });
+    }
   };
   return (
     <>

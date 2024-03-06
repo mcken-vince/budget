@@ -55,9 +55,9 @@ export const TransactionForm = () => {
   };
   return (
     <>
-      <Button onClick={() => setShowForm(true)}>Add</Button>
+      <Button onClick={() => setShowForm(true)}>New Transaction</Button>
       <Modal
-        title="Create Transaction"
+        title="New Transaction"
         show={showForm}
         onClose={() => setShowForm(false)}
         onSubmit={handleSubmit(onSubmitHandler)}

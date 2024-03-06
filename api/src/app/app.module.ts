@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../core/database/database.module';
 import { AuthModule } from '../modules/auth/auth.module';
 import { TransactionModule } from '../modules/transactions/transaction.module';
+import { BudgetModule } from '../modules/budgets/budget.module';
+import { CategoryModule } from '../modules/category/category.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { TransactionModule } from '../modules/transactions/transaction.module';
     DatabaseModule,
     AuthModule,
     TransactionModule,
+    BudgetModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

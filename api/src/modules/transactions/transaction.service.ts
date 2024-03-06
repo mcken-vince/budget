@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { TransactionEntity } from '../../core/entities';
+import { CategoryEntity, TransactionEntity } from '../../core/entities';
 import { TransactionDto } from '../../core/dto/transaction.dto';
 import { DeleteResponse } from '../../core/dto/delete-response.dto';
 
@@ -23,6 +23,9 @@ export class TransactionService {
   async findAll(idUser: number): Promise<TransactionEntity[]> {
     return await this._transactionRepository.findAll({
       where: { idUser },
+      include: [
+        { model: CategoryEntity, as: 'category', attributes: ['id', 'name'] },
+      ],
     });
   }
 
@@ -42,6 +45,18 @@ export class TransactionService {
   async update(
     id: number,
     input: TransactionDto,
+    idUser: number
+  ): Promise<TransactionEntity> {
+    let transaction = await this.findOne(id, idUser);
+    if (!transaction) throw new NotFoundException('Transaction not found');
+
+    transaction = await transaction.update({ ...input });
+    return transaction;
+  }
+
+  async updateCategory(
+    id: number,
+    input: { idCategory: string },
     idUser: number
   ): Promise<TransactionEntity> {
     let transaction = await this.findOne(id, idUser);

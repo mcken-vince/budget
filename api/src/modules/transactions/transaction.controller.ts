@@ -51,6 +51,15 @@ export class TransactionController {
     return this._transactionService.update(id, input, user.id);
   }
 
+  @Put(':id/category')
+  async updateCategory(
+    @Param('id') id: number,
+    @Body() input: { idCategory: string },
+    @User() user: any
+  ): Promise<TransactionEntity> {
+    return this._transactionService.updateCategory(id, input, user.id);
+  }
+
   @Delete(':id')
   async remove(
     @Param('id') id: number,

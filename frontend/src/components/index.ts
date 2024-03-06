@@ -5,6 +5,7 @@ export * from './Modal';
 export * from './DropdownMenu';
 export * from './SectionTitle';
 export * from './Inputs/InputErrorMessage';
+export * from './Popup';
 
 // Navigation
 export * from './Navigation/TopNav';

@@ -1,5 +1,5 @@
-import { UseRedirectIfAuthenticated } from '../../hooks';
-import { SignUpForm } from '../../components';
+import { UseRedirectIfAuthenticated } from '@hooks';
+import { SignUpForm } from '@components';
 
 export default function SignUpPage() {
   return (

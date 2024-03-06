@@ -16,10 +16,17 @@
         "name": "next"
       }
     ],
-    "types": [
-      "jest",
-      "node"
-    ]
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@components": ["src/components/index"],
+      "@helpers/*": ["src/helpers/*"],
+      "@helpers": ["src/helpers/index"],
+      "@hooks/*": ["src/hooks/*"],
+      "@hooks": ["src/hooks/index"],
+      "@providers/*": ["src/providers/*"]
+    }
   },
   "include": [
     "**/*.ts",
@@ -31,10 +38,5 @@
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "jest.config.ts",
-    "**/*.spec.ts",
-    "**/*.test.ts"
-  ]
+  "exclude": ["node_modules", "jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
 }

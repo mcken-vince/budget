@@ -2,7 +2,7 @@
 
 import { ReactElement, useRef, useState } from 'react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/16/solid';
-import { useClickOutside } from '../hooks/useClickOutside';
+import { useClickOutside } from '@hooks';
 
 export interface DropdownMenuProps {
   icon?: ReactElement;

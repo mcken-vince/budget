@@ -1,6 +1,6 @@
 'use client';
 
-import { apiFetch } from 'frontend/src/helpers/clients/fetch-client';
+import { apiFetch } from '@helpers/clients';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 

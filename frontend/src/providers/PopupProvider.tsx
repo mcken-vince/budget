@@ -1,45 +1,16 @@
 'use client';
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { Popup, PopupType } from '../components/Popup';
+import { ReactNode, useEffect, useState } from 'react';
+import { Popup } from '@components';
+import { OpenPopupProps, PopupContext } from '@hooks';
 
 type PopupProviderProps = {
   children: ReactNode;
 };
 
-type PopupContextType = OpenPopupProps & {
-  open: boolean;
-  openPopup: (args: OpenPopupProps) => void;
-  closePopup: () => void;
-};
-
-type OpenPopupProps = {
-  title: string;
-  subText?: string;
-  type: PopupType;
-};
-
 type PopupStateType = OpenPopupProps & {
   open: boolean;
 };
-
-const PopupContext = createContext<PopupContextType>({
-  open: false,
-  openPopup: () => {
-    return;
-  },
-  closePopup: () => {
-    return;
-  },
-  title: '',
-  type: 'notify',
-});
 
 export function PopupProvider({ children }: PopupProviderProps) {
   const [popupState, setPopupState] = useState<PopupStateType>({
@@ -81,8 +52,4 @@ export function PopupProvider({ children }: PopupProviderProps) {
       />
     </PopupContext.Provider>
   );
-}
-
-export function usePopup() {
-  return useContext(PopupContext);
 }

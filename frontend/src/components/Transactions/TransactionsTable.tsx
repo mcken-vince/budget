@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { apiFetch } from '../../helpers/clients/fetch-client';
+import { apiFetch } from '@helpers/clients';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu } from '../DropdownMenu';
 import { TrashIcon, PencilIcon } from '@heroicons/react/16/solid';
-import { formatDate } from '../../helpers/date.helpers';
+import { formatDate } from '@helpers';
 import { CategorySelector } from '../Category/CategorySelector';
 
 export const TransactionsTable = () => {

@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { Button } from '../Buttons/Button';
 import { Input } from '../Inputs/Input';
-import { apiFetch } from '../../helpers/clients/fetch-client';
+import { apiFetch } from '@helpers/clients';
 import { Modal } from '../Modal';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';

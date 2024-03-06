@@ -5,15 +5,10 @@ import { Input } from '../Inputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { Button } from '../Buttons/Button';
-import { useRouter } from 'next/navigation';
 
 export const LoginForm = () => {
-  const router = useRouter();
-  const { status } = useSession();
-  if (status === 'authenticated') router.push('/');
-
   const schema = yup
     .object()
     .shape({
@@ -38,12 +33,8 @@ export const LoginForm = () => {
   });
 
   const onSubmitHandler = async (data: any) => {
-    await signIn('credentials', data);
-    // const response = await apiFetch('auth/login', {
-    //   method: 'POST',
-    //   data,
-    // });
-    // console.log({ response });
+    const response = await signIn('credentials', data);
+    console.log({ response });
   };
 
   const headerText = 'Welcome to Budget';
@@ -51,7 +42,7 @@ export const LoginForm = () => {
     'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.';
   return (
     <section className="bg-white">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
+      <div className="lg:grid lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           {/* <img
             alt=""

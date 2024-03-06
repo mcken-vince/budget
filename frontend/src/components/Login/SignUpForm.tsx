@@ -6,14 +6,14 @@ import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { apiFetch } from '../../helpers/clients/fetch-client';
+import { apiFetch } from '@helpers/clients';
 import { Button } from '../Buttons/Button';
-import { useSession } from 'next-auth/react';
+import { usePopup } from '@hooks';
 
 export const SignUpForm = () => {
   const router = useRouter();
-  const { status } = useSession();
-  if (status === 'authenticated') router.push('/');
+
+  const { openPopup } = usePopup();
 
   const schema = yup
     .object()
@@ -53,6 +53,12 @@ export const SignUpForm = () => {
       method: 'POST',
       data,
     });
+
+    openPopup({
+      title: 'Account Created!',
+      type: 'success',
+      subText: 'Please login to continue.',
+    });
     console.log({ response });
     router.push('/login');
   };
@@ -62,7 +68,7 @@ export const SignUpForm = () => {
     'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.';
   return (
     <section className="bg-white">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
+      <div className="lg:grid lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           {/* <img
             alt=""

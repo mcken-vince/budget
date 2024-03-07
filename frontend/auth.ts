@@ -5,7 +5,7 @@ import { apiFetch } from '@helpers/clients';
 import { encode, decode } from 'next-auth/jwt';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  secret: 'Yo/0duPLAErkzTcBlgWGWR4eaVyivqU6a+M/ot0fo9c=',
+  secret: process.env.JWTKEY as string,
   session: { strategy: 'jwt' },
   jwt: { encode, decode },
   pages: {

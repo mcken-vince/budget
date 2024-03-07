@@ -47,6 +47,7 @@ export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
         data,
         token: session?.auth_token + '',
       });
+      if (!response) throw new Error('Category not created');
       addCategory(response);
       openPopup({ title: 'New category added!', type: 'success' });
     } catch (error) {

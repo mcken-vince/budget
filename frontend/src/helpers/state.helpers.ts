@@ -19,13 +19,8 @@ export const updateState = <T extends { id: string }>(
 export const removeFromState = <T extends { id: string }>(
   setState: Dispatch<SetStateAction<T[]>>
 ) => {
-  return (id: string) => {
-    setState((prev) => {
-      const index = prev.findIndex((t) => t.id === id);
-      if (index === -1) return prev;
-      const copy = [...prev];
-      copy.splice(index, 1);
-      return copy;
-    });
+  return (id: string | string[]) => {
+    const idArray = Array.isArray(id) ? id : [id];
+    setState((prev) => prev.filter((item) => !idArray.includes(item?.id)));
   };
 };

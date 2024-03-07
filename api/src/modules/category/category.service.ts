@@ -1,7 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CategoryEntity } from '../../core/entities';
-import { TransactionDto } from '../../core/dto/transaction.dto';
-import { DeleteResponse } from '../../core/dto/delete-response.dto';
+import { CategoryEntity } from '@entities';
+import { DeleteResponse, CategoryDto } from '@dto';
 
 @Injectable()
 export class CategoryService {
@@ -10,7 +9,7 @@ export class CategoryService {
     private readonly _categoryRepository: typeof CategoryEntity
   ) {}
 
-  async create(input: any, idUser: number): Promise<CategoryEntity> {
+  async create(input: CategoryDto, idUser: number): Promise<CategoryEntity> {
     return await this._categoryRepository.create({
       ...input,
       idUser,
@@ -38,7 +37,7 @@ export class CategoryService {
 
   async update(
     id: number,
-    input: any,
+    input: CategoryDto,
     idUser: number
   ): Promise<CategoryEntity> {
     let category = await this.findOne(id, idUser);

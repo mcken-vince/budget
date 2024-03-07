@@ -1,4 +1,4 @@
-import { TransactionEntity } from '../../core/entities/transaction.entity';
+import { TransactionEntity } from '@entities';
 
 export const transactionProviders = [
   {

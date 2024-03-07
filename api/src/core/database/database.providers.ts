@@ -5,7 +5,7 @@ import {
   BudgetEntity,
   TransactionEntity,
   CategoryEntity,
-} from '../entities';
+} from '@entities';
 
 export const databaseProviders = [
   {

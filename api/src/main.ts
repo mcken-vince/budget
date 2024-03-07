@@ -7,8 +7,8 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { ValidateInputPipe } from './core/pipes/validate.pipe';
-import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
+import { ValidateInputPipe } from '@pipes/validate.pipe';
+import { LoggingInterceptor } from '@interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

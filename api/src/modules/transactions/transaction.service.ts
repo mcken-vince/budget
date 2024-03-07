@@ -1,8 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CategoryEntity, TransactionEntity } from '../../core/entities';
-import { TransactionDto } from '../../core/dto/transaction.dto';
-import { DeleteResponse } from '../../core/dto/delete-response.dto';
-
+import { CategoryEntity, TransactionEntity } from '@entities';
+import { TransactionDto, DeleteResponse } from '@dto';
 @Injectable()
 export class TransactionService {
   constructor(

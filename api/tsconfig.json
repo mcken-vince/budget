@@ -11,6 +11,18 @@
     }
   ],
   "compilerOptions": {
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@entities": ["src/core/entities/index.ts"],
+      "@entities/*": ["src/core/entities/*"],
+      "@dto": ["src/core/dto/index.ts"],
+      "@dto/*": ["src/core/dto/*"],
+      "@decorators/*": ["src/core/decorators/*"],
+      "@guards/*": ["src/core/guards/*"],
+      "@database/*": ["src/core/database/*"],
+      "@pipes/*": ["src/core/pipes/*"],
+      "@interceptors/*": ["src/core/interceptors/*"],
+    }
   }
 }

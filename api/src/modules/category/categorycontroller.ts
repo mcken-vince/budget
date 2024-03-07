@@ -10,14 +10,11 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {
-  BudgetEntity,
   CategoryEntity,
-  TransactionEntity,
-} from '../../core/entities';
-import { User } from '../../core/decorators/user.decorator';
-import { TransactionDto } from '../../core/dto/transaction.dto';
-import { AuthGuard } from '../../core/guards/auth.guard';
-import { DeleteResponse } from '../../core/dto/delete-response.dto';
+} from '@entities';
+import { User } from '@decorators/user.decorator';
+import { CategoryDto, DeleteResponse } from '@dto';
+import { AuthGuard } from '@guards/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('category')
@@ -34,29 +31,29 @@ export class CategoryController {
   // async findOne(
   //   @Param('id') id: number,
   //   @User() user
-  // ): Promise<TransactionEntity> {
-  //   return this._transactionService.findOne(id, user.id);
+  // ): Promise<CategoryEntity> {
+  //   return this._categoryService.findOne(id, user.id);
   // }
 
   @Post()
-  async create(@Body() input: any, @User() user): Promise<CategoryEntity> {
+  async create(@Body() input: CategoryDto, @User() user): Promise<CategoryEntity> {
     return this._categoryService.create(input, user.id);
   }
 
-  // @Put(':id')
-  // async update(
-  //   @Param('id') id: number,
-  //   @Body() input: TransactionDto,
-  //   @User() user: any
-  // ): Promise<TransactionEntity> {
-  //   return this._transactionService.update(id, input, user.id);
-  // }
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() input: CategoryDto,
+    @User() user: any
+  ): Promise<CategoryEntity> {
+    return this._categoryService.update(id, input, user.id);
+  }
 
-  // @Delete(':id')
-  // async remove(
-  //   @Param('id') id: number,
-  //   @User() user: any
-  // ): Promise<DeleteResponse> {
-  //   return this._transactionService.delete(id, user.id);
-  // }
+  @Delete(':id')
+  async remove(
+    @Param('id') id: number,
+    @User() user: any
+  ): Promise<DeleteResponse> {
+    return this._categoryService.delete(id, user.id);
+  }
 }

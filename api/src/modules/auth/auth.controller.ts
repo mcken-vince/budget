@@ -1,8 +1,8 @@
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { DoesUserExist } from '../../core/guards/does-user-exist.guard';
-import { UserDto } from '../../core/dto/user.dto';
-import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
+import { DoesUserExist } from '@guards/does-user-exist.guard';
+import { LocalAuthGuard } from '@guards/local-auth.guard';
+import { UserDto } from '@dto';
 
 @Controller('auth')
 export class AuthController {

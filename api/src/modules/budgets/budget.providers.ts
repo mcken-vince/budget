@@ -1,4 +1,4 @@
-import { BudgetEntity } from '../../core/entities/budget.entity';
+import { BudgetEntity } from '@entities';
 
 export const budgetProviders = [
   {

@@ -1,7 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { BudgetEntity } from '../../core/entities';
-import { TransactionDto } from '../../core/dto/transaction.dto';
-import { DeleteResponse } from '../../core/dto/delete-response.dto';
+import { BudgetEntity } from '@entities';
+import { TransactionDto, DeleteResponse } from '@dto';
 
 @Injectable()
 export class BudgetService {

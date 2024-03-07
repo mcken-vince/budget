@@ -9,12 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BudgetService } from './budget.service';
-import { BudgetEntity, TransactionEntity } from '../../core/entities';
-import { User } from '../../core/decorators/user.decorator';
-import { TransactionDto } from '../../core/dto/transaction.dto';
-import { AuthGuard } from '../../core/guards/auth.guard';
-import { DeleteResponse } from '../../core/dto/delete-response.dto';
-
+import { BudgetEntity, TransactionEntity } from '@entities';
+import { User } from '@decorators/user.decorator';
+import { DeleteResponse } from '@dto';
+import { AuthGuard } from '@guards/auth.guard';
 @UseGuards(AuthGuard)
 @Controller('budget')
 export class BudgetController {

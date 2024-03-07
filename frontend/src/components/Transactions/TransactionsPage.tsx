@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import {
-  SectionTitle,
   TransactionForm,
   CategoryForm,
   TransactionsTable,
+  SectionHeader,
 } from '../../components';
 import { addToState, updateState } from '@helpers';
 import { apiFetch } from '@helpers/clients';
@@ -21,34 +21,36 @@ export default function TransactionsPage() {
   const updateTransaction = useMemo(() => updateState(setTransactions), []);
 
   useEffect(() => {
-    (async function fetchTransactions() {
-      if (session?.auth_token) {
-        const response = await apiFetch('transactions', {
-          token: session?.auth_token,
-        });
-        setTransactions(Array.isArray(response) ? response : []);
-      }
-    })();
+    if (session?.auth_token) {
+      (async function fetchTransactions() {
+        if (session?.auth_token) {
+          const response = await apiFetch('transactions', {
+            token: session?.auth_token,
+          });
+          setTransactions(Array.isArray(response) ? response : []);
+        }
+      })();
 
-    (async function fetchCategories() {
-      if (session?.auth_token) {
-        const response = await apiFetch('category', {
-          token: session?.auth_token,
-        });
-        setCategories(Array.isArray(response) ? response : []);
-      }
-    })();
+      (async function fetchCategories() {
+        if (session?.auth_token) {
+          const response = await apiFetch('category', {
+            token: session?.auth_token,
+          });
+          setCategories(Array.isArray(response) ? response : []);
+        }
+      })();
+    }
   }, [session?.auth_token]);
 
   return (
     <div>
-      <div className="flex flex-row justify-between">
-        <SectionTitle>Transactions</SectionTitle>
-        <div>
+      <SectionHeader title="Transactions">
+        <>
           <CategoryForm addCategory={addCategory} />
           <TransactionForm addTransaction={addTransaction} />
-        </div>
-      </div>
+        </>
+      </SectionHeader>
+
       <TransactionsTable
         categories={categories}
         transactions={transactions}

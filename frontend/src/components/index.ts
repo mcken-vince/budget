@@ -1,10 +1,16 @@
 // Base Components
 export * from './Buttons/Button';
+export * from './Buttons/IconButton';
 export * from './Inputs/Input';
-export * from './Modal';
-export * from './DropdownMenu';
-export * from './SectionTitle';
 export * from './Inputs/InputErrorMessage';
+export * from './SectionTitle';
+export * from './SectionHeader';
+
+// Menus
+export * from './DropdownMenu';
+
+// Alerts and Modals
+export * from './Modal';
 export * from './Popup';
 
 // Navigation
@@ -22,3 +28,4 @@ export * from './Transactions/TransactionsTable';
 // Category
 export * from './Category/CategoryForm';
 export * from './Category/CategorySelector';
+export * from './Category/ManageCategoriesTable';

@@ -39,6 +39,9 @@ export const TopNav = () => {
                 <li>
                   <NavLink href="/transactions" label="Transactions" />
                 </li>
+                <li>
+                  <NavLink href="/categories" label="Categories" />
+                </li>
               </ul>
             )}
           </nav>

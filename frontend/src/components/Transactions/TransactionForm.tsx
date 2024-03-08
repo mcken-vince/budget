@@ -61,6 +61,7 @@ export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
       console.log({ response });
       addTransaction(response);
       openPopup({ title: 'New Transaction added!', type: 'success' });
+      setShowForm(false);
     } catch (error) {
       console.log({ error });
       openPopup({ title: 'Error adding transaction!', type: 'error' });
@@ -75,6 +76,7 @@ export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
         onClose={() => setShowForm(false)}
         onSubmit={handleSubmit(onSubmitHandler)}
         closeButtonText="Cancel"
+        disableSubmit={Object.keys(errors).length > 0}
       >
         <form className="mt-8 grid grid-cols-6 gap-6">
           <div className="col-span-6">
@@ -132,7 +134,12 @@ export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
               control={control}
               render={({ field }) => (
                 <Input
-                  value={field.value}
+                  value={
+                    typeof field?.value === 'string' ||
+                    typeof field?.value === 'undefined'
+                      ? field.value
+                      : field.value.toLocaleDateString('en-CA')
+                  }
                   onChange={field.onChange}
                   label="Date"
                   name="date"

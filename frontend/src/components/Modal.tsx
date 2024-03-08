@@ -1,14 +1,17 @@
 import { XCircleIcon } from '@heroicons/react/16/solid';
 import { ReactElement } from 'react';
 import { IconButton } from './Buttons/IconButton';
+import { Button } from './Buttons/Button';
 
 export interface ModalProps {
   show: boolean;
   title: string;
   onClose: () => void;
   onSubmit?: () => Promise<void>;
+  disableSubmit?: boolean;
   children: ReactElement;
   closeButtonText?: string;
+  submitButtonText?: string;
   preventCloseOnClickOutside?: boolean;
 }
 
@@ -17,7 +20,9 @@ export const Modal = ({
   show,
   onClose,
   onSubmit,
-  closeButtonText,
+  disableSubmit,
+  closeButtonText = 'Cancel',
+  submitButtonText = 'Submit',
   children,
   preventCloseOnClickOutside,
 }: ModalProps) => {
@@ -39,24 +44,22 @@ export const Modal = ({
             </IconButton>
           </div>
           <div className="relative p-6 flex-auto">{children}</div>
-          <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-            <button
-              className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
-              type="button"
+          <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b gap-2">
+            <Button
+              variant="border"
+              color="secondary"
               onClick={() => onClose()}
             >
-              {closeButtonText ?? 'Close'}
-            </button>
-            <button
-              className="text-white bg-yellow-500 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-              type="button"
+              {closeButtonText}
+            </Button>
+            <Button
+              disabled={disableSubmit}
               onClick={async () => {
                 if (onSubmit) await onSubmit();
-                onClose();
               }}
             >
-              Submit
-            </button>
+              {submitButtonText}
+            </Button>
           </div>
         </div>
       </div>

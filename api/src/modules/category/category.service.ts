@@ -19,6 +19,7 @@ export class CategoryService {
   async findAll(idUser: number): Promise<CategoryEntity[]> {
     return await this._categoryRepository.findAll({
       where: { idUser },
+      include: [{ model: CategoryEntity, as: 'parent' }],
     });
   }
 

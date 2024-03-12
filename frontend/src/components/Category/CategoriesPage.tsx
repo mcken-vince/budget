@@ -30,7 +30,7 @@ export const CategoriesPage = () => {
   return (
     <div>
       <SectionHeader title="Categories">
-        <CategoryForm addCategory={addCategory} />
+        <CategoryForm addCategory={addCategory} categories={categories} />
       </SectionHeader>
       <ManageCategoriesTable
         categories={categories}

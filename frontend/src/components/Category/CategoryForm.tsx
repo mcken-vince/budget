@@ -10,14 +10,20 @@ import { Modal } from '../Modal';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePopup } from '@hooks';
+import { Select } from '../Inputs/Select';
 
 export interface CategoryFormProps {
   addCategory: (newCategory: any) => void;
+  categories: any[];
 }
 
-export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
+export const CategoryForm = ({
+  addCategory,
+  categories,
+}: CategoryFormProps) => {
   const createCategorySchema = yup.object().shape({
     name: yup.string().min(1).max(255).required('Name is required.'),
+    idParent: yup.number().nullable(),
   });
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -31,6 +37,7 @@ export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
     resolver: yupResolver(createCategorySchema),
     defaultValues: {
       name: '',
+      idParent: null,
     },
   });
 
@@ -56,6 +63,7 @@ export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
       openPopup({ title: 'Error adding category!', type: 'error' });
     }
   };
+  console.log({ categories });
   return (
     <>
       <Button onClick={() => setShowForm(true)}>New Category</Button>
@@ -82,6 +90,27 @@ export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
                   label="Name"
                   name="name"
                   type="text"
+                  error={errors?.name?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="col-span-6">
+            <Controller
+              name="idParent"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  options={categories
+                    ?.filter((category) => !category.idParent)
+                    .map((category) => ({
+                      label: category.name,
+                      value: category.id,
+                    }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Parent Category"
+                  name="name"
                   error={errors?.name?.message}
                 />
               )}

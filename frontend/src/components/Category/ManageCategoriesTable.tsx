@@ -85,6 +85,9 @@ export const ManageCategoriesTable = ({
               Name
             </th>
             <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
+              Parent Category
+            </th>
+            <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
               Created
             </th>
             {/* <th className="whitespace-nowrap px-4 py-2"></th> */}
@@ -117,6 +120,9 @@ export const ManageCategoriesTable = ({
               </td>
               <td className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
                 {category?.name}
+              </td>
+              <td className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
+                {category?.parent?.name || '--'}
               </td>
               <td className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
                 {formatDate(category?.createdAt)}

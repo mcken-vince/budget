@@ -1,4 +1,5 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -10,9 +11,14 @@ import {
 import { BaseEntity } from './base.entity';
 import { TransactionEntity } from './transaction.entity';
 import { UserEntity } from './user.entity';
+import { BudgetEntity } from './budget.entity';
 
 @Table({ tableName: 'Category' })
 export class CategoryEntity extends BaseEntity {
+  @ForeignKey(() => CategoryEntity)
+  @Column({ type: DataType.INTEGER, allowNull: true })
+  idParent: number;
+
   @ForeignKey(() => UserEntity)
   @Column({ type: DataType.INTEGER, allowNull: false })
   idUser: number;
@@ -24,4 +30,10 @@ export class CategoryEntity extends BaseEntity {
 
   @HasMany(() => TransactionEntity)
   transactions: TransactionEntity[];
+
+  @BelongsTo(() => CategoryEntity)
+  parent: CategoryEntity;
+
+  @HasMany(() => BudgetEntity, { foreignKey: 'idCategory' })
+  budgets: BudgetEntity[];
 }

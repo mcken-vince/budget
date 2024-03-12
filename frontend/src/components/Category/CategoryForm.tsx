@@ -49,6 +49,7 @@ export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
       });
       if (!response) throw new Error('Category not created');
       addCategory(response);
+      setShowForm(false);
       openPopup({ title: 'New category added!', type: 'success' });
     } catch (error) {
       console.log({ error });

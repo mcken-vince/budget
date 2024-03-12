@@ -12,6 +12,7 @@ export interface InputProps {
   type?: InputType;
   autoComplete?: string;
   error?: string;
+  autoFocus?: boolean;
 }
 
 export const Input = ({
@@ -23,6 +24,7 @@ export const Input = ({
   type = 'text',
   autoComplete,
   error,
+  autoFocus,
 }: InputProps) => {
   return (
     <div>
@@ -31,6 +33,7 @@ export const Input = ({
       </label>
 
       <input
+        autoFocus={autoFocus}
         type={type}
         id={name}
         placeholder={placeholder}

@@ -66,13 +66,17 @@ export const CategoryForm = ({ addCategory }: CategoryFormProps) => {
         onSubmit={handleSubmit(onSubmitHandler)}
         closeButtonText="Cancel"
       >
-        <form className="mt-8 grid grid-cols-6 gap-6">
+        <form
+          className="mt-8 grid grid-cols-6 gap-6"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="col-span-6">
             <Controller
               name="name"
               control={control}
               render={({ field }) => (
                 <Input
+                  autoFocus
                   value={field.value}
                   onChange={field.onChange}
                   label="Name"

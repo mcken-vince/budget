@@ -52,7 +52,6 @@ export const TransactionsTable = ({
             <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
               Amount
             </th>
-            <th className="whitespace-nowrap px-4 py-2"></th>
           </tr>
         </thead>
 
@@ -96,7 +95,7 @@ export const TransactionsTable = ({
               <td className="whitespace-nowrap px-4 py-2 text-slate-700">
                 ${transaction.amount}
               </td>
-              <td>
+              {/* <td>
                 <DropdownMenu
                   uniqueId={transaction?.id}
                   items={[
@@ -119,7 +118,7 @@ export const TransactionsTable = ({
                     },
                   ]}
                 />
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

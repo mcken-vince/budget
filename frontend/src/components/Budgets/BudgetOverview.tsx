@@ -1,7 +1,6 @@
 'use client';
 
 import { ProgressBar } from '@components/Progress';
-import { useRouter } from 'next/navigation';
 
 export interface BudgetOverviewProps {
   category: any;
@@ -18,7 +17,6 @@ export const BudgetOverview = ({
   hideBudgetAmount,
   onClick,
 }: BudgetOverviewProps) => {
-  const router = useRouter();
   const percentage = (total / budgetAmount) * 100 || 0;
   return (
     <div
@@ -28,7 +26,7 @@ export const BudgetOverview = ({
       <div className="flex justify-between mb-1">
         <h3>{category.name}</h3>
         <h3>
-          ${total}
+          ${total.toFixed(2)}
           {hideBudgetAmount ? null : ` of ${budgetAmount}`}
         </h3>
       </div>

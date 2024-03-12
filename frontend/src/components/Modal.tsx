@@ -1,5 +1,7 @@
+'use client';
+
 import { XCircleIcon } from '@heroicons/react/16/solid';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { IconButton } from './Buttons/IconButton';
 import { Button } from './Buttons/Button';
 
@@ -26,6 +28,16 @@ export const Modal = ({
   children,
   preventCloseOnClickOutside,
 }: ModalProps) => {
+  useEffect(() => {
+    const keyUpEventListener = (e: KeyboardEvent) => {
+      if (e.code === 'Escape' && onClose) onClose();
+      if (e.code === 'Enter' && onSubmit) onSubmit();
+    };
+    window.addEventListener('keyup', keyUpEventListener);
+
+    return () => window.removeEventListener('keyup', keyUpEventListener);
+  }, [onClose, onSubmit]);
+
   if (!show) return null;
   return (
     <div

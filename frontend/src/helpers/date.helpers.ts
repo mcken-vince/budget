@@ -3,8 +3,8 @@ export const formatDate = (date?: Date): string => {
   return new Date(date).toDateString();
 };
 
-export const addxMonths = (x: number) => {
-  const d = new Date();
+export const addxMonths = (x: number, date?: Date) => {
+  const d = date ? new Date(date) : new Date();
   d.setMonth(d.getMonth() + x);
   return d;
 };

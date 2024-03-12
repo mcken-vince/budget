@@ -11,12 +11,17 @@ import {
 import { BaseEntity } from './base.entity';
 import { UserEntity } from './user.entity';
 import { TransactionEntity } from './transaction.entity';
+import { CategoryEntity } from './category.entity';
 
 @Table({ tableName: 'Budget' })
 export class BudgetEntity extends BaseEntity {
   @ForeignKey(() => UserEntity)
   @Column({ type: DataType.INTEGER, allowNull: false })
   idUser: number;
+
+  @ForeignKey(() => CategoryEntity)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  idCategory: number;
 
   @Max(255)
   @Column({ type: DataType.STRING(255), allowNull: false })
@@ -39,6 +44,9 @@ export class BudgetEntity extends BaseEntity {
   // Relationships
   @BelongsTo(() => UserEntity)
   user: UserEntity;
+
+  @BelongsTo(() => CategoryEntity)
+  category: CategoryEntity;
 
   @HasMany(() => TransactionEntity, { foreignKey: 'idBudget' })
   transactions: TransactionEntity[];

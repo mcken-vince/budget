@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryEntity, TransactionEntity } from '@entities';
 import { TransactionDto, DeleteResponse } from '@dto';
+import { Op } from 'sequelize';
 @Injectable()
 export class TransactionService {
   constructor(
@@ -24,6 +25,18 @@ export class TransactionService {
       include: [
         { model: CategoryEntity, as: 'category', attributes: ['id', 'name'] },
       ],
+    });
+  }
+
+  async findAllByDateRange(
+    input: { startDate: string; endDate: string },
+    idUser: number
+  ): Promise<TransactionEntity[]> {
+    return await this._transactionRepository.findAll({
+      where: {
+        idUser,
+        date: { [Op.between]: [input.startDate, input.endDate] },
+      },
     });
   }
 

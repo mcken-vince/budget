@@ -24,6 +24,18 @@ export class TransactionController {
     return this._transactionService.findAll(user.id);
   }
 
+  @Get('byDateRange/:startDate/:endDate')
+  async findAllByDateRange(
+    @Param('startDate') startDate: string,
+    @Param('endDate') endDate: string,
+    @User() user: any
+  ): Promise<TransactionEntity[]> {
+    return this._transactionService.findAllByDateRange(
+      { startDate, endDate },
+      user.id
+    );
+  }
+
   @Get(':id')
   async findOne(
     @Param('id') id: number,

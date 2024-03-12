@@ -93,7 +93,7 @@ export const TransactionsTable = ({
                 />
               </td>
               <td className="whitespace-nowrap px-4 py-2 text-slate-700">
-                ${transaction.amount}
+                ${transaction.amount.toFixed(2)}
               </td>
               {/* <td>
                 <DropdownMenu

@@ -54,7 +54,7 @@ export const Modal = ({
       onClick={preventCloseOnClickOutside ? undefined : onClose}
     >
       <div
-        className="relative w-auto my-6 mx-auto max-w-3xl"
+        className="relative w-auto my-6 mx-auto max-w-3xl min-w-[400px] max-h-full overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">

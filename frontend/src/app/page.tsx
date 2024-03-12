@@ -2,6 +2,7 @@
 
 import { addxMonths, getMonthYearObject } from '@helpers/date.helpers';
 import { useMemo, useState } from 'react';
+import { TransactionsByMonth } from '@components';
 
 export default function Index() {
   const getDates = (count = 12) => {
@@ -69,6 +70,8 @@ export default function Index() {
           </nav>
         </div>
       </div>
+
+      <TransactionsByMonth date={selectedDate} />
     </div>
   );
 }

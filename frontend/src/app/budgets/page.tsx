@@ -1,3 +1,5 @@
-export default function BudgetsPage() {
-  return <h1>Budgets View Page</h1>;
+import { BudgetsPage } from '@components/Budgets/BudgetsPage';
+
+export default function BudgetsViewPage() {
+  return <BudgetsPage />;
 }

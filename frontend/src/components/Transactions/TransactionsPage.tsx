@@ -46,7 +46,7 @@ export default function TransactionsPage() {
     <div>
       <SectionHeader title="Transactions">
         <>
-          <CategoryForm addCategory={addCategory} />
+          <CategoryForm addCategory={addCategory} categories={categories} />
           <TransactionForm addTransaction={addTransaction} />
         </>
       </SectionHeader>

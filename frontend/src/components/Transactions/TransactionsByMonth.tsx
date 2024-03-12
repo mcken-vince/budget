@@ -5,14 +5,11 @@ import { addxMonths } from '@helpers/date.helpers';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { BudgetOverview } from '..';
-import { useRouter } from 'next/navigation';
 
 export const TransactionsByMonth = ({ date }: any) => {
   const { data: session } = useSession();
-  const router = useRouter();
   const [transactions, setTransactions] = useState<any[]>([]);
-  const [categories, setCateogories] = useState<any[]>([]);
-  const [budgets, setBudgets] = useState<Record<string, any>>({});
+  const [budgets, setBudgets] = useState<any[]>([]);
 
   const uncategorizedTransactions = transactions.filter(
     (transaction) => !transaction.idCategory
@@ -35,58 +32,32 @@ export const TransactionsByMonth = ({ date }: any) => {
           setTransactions(response);
         }
       })();
-      (async function fetchCategories() {
-        const response = await apiFetch('category', {
+      (async function fetchBudgets() {
+        const response = await apiFetch('budget', {
           token: session?.auth_token,
         });
         if (Array.isArray(response)) {
-          setCateogories(response);
+          setBudgets(response);
         }
       })();
     }
   }, [session?.auth_token, date]);
 
-  useEffect(() => {
-    const budgetObject: Record<string, any> = {};
-    if (categories.length > 0 && transactions.length > 0) {
-      categories.forEach((category) => {
-        const relevantTransactions = transactions.filter((transaction) => {
-          return transaction.idCategory === category.id;
-        });
-        const total = relevantTransactions.reduce(
-          (acc, transaction) => acc + transaction.amount,
-          0
-        );
-        budgetObject[category.name] = {
-          category,
-          total,
-        };
-      });
-    }
-    setBudgets(budgetObject);
-  }, [transactions, categories]);
-  console.log({ budgets });
   return (
     <div>
-      {Object.keys(budgets).map((key) => (
+      {budgets.map((budget: any) => (
         <BudgetOverview
-          key={`budget-${budgets[key].category.name}-${date.month + date.year}`}
-          category={budgets[key].category}
-          total={budgets[key].total}
-          budgetAmount={100}
-          onClick={() => {
-            router.push(
-              `/budgets/${budgets[key].category.name}?startDate=${date.month},1,${date.year}&endDate=${date.month},31,${date.year}`
-            );
-          }}
+          key={`budget-${budget?.name}-${date.month + date.year}`}
+          budget={budget}
+          budgetAmount={budget?.totalAmount}
+          transactions={transactions.filter((transaction) => {
+            return transaction?.idCategory === budget?.idCategory;
+          })}
         />
       ))}
       <BudgetOverview
-        category={{ name: '-- Uncategorized --' }}
-        total={uncategorizedTransactions.reduce(
-          (acc, transaction) => acc + transaction.amount,
-          0
-        )}
+        budget={{ name: '-- Uncategorized --' }}
+        transactions={uncategorizedTransactions}
         hideBudgetAmount
       />
     </div>

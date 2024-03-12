@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { BudgetEntity } from '@entities';
-import { TransactionDto, DeleteResponse } from '@dto';
+import { DeleteResponse, BudgetDto } from '@dto';
 
 @Injectable()
 export class BudgetService {
@@ -9,7 +9,7 @@ export class BudgetService {
     private readonly _budgetRepository: typeof BudgetEntity
   ) {}
 
-  async create(input: any, idUser: number): Promise<BudgetEntity> {
+  async create(input: BudgetDto, idUser: number): Promise<BudgetEntity> {
     return await this._budgetRepository.create({
       ...input,
       idUser,

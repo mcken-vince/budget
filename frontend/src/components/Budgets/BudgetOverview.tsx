@@ -30,7 +30,7 @@ export const BudgetOverview = ({
   const percentage = (spend / budgetAmount) * 100 || 0;
   return (
     <div
-      className="hover:bg-slate-300 hover:cursor-pointer p-2"
+      className="hover:bg-slate-300 hover:cursor-pointer p-2 w-full"
       onClick={() => {
         if (onClick) onClick();
         if (transactions.length) setDrawerOpen((prev) => !prev);

@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { apiFetch } from '@helpers/clients';
 import { SectionHeader } from '..';
 import { BudgetsTable } from './BudgetsTable';
-import { addToState } from '@helpers/state.helpers';
+import { addToState, removeFromState } from '@helpers/state.helpers';
 
 export const BudgetsPage = () => {
   const { data: session } = useSession();
@@ -14,6 +14,7 @@ export const BudgetsPage = () => {
   const [budgets, setBudgets] = useState<any[]>([]);
 
   const addBudget = useMemo(() => addToState(setBudgets), []);
+  const removeBudget = useMemo(() => removeFromState(setBudgets), []);
 
   useEffect(() => {
     if (session?.auth_token) {
@@ -43,6 +44,7 @@ export const BudgetsPage = () => {
         updateBudget={() => {
           return;
         }}
+        removeBudget={removeBudget}
       />
     </div>
   );

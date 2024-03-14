@@ -44,10 +44,13 @@ export const TransactionsByMonth = ({ date }: any) => {
     }
   }, [session?.auth_token, date]);
 
-  const totalAmount = useMemo(() => {
+  const budgetIncome = useMemo(() => {
+    return 6000;
+  }, []);
+  const budgetSpending = useMemo(() => {
     return budgets.reduce((acc, budget) => acc + budget.totalAmount, 0);
   }, [budgets]);
-  const totalSpent = useMemo(() => {
+  const actualSpending = useMemo(() => {
     return transactions.reduce(
       (acc, transaction) => acc + transaction.amount,
       0
@@ -56,7 +59,10 @@ export const TransactionsByMonth = ({ date }: any) => {
 
   return (
     <div className="flex flex-col md:flex-row md:gap-5">
-      <BudgetSummary totalAmount={totalAmount} totalSpent={totalSpent} />
+      <BudgetSummary
+        budgetIncome={budgetIncome}
+        budgetSpending={budgetSpending}
+      />
       <div className="grow">
         {budgets.map((budget: any) => (
           <BudgetOverview

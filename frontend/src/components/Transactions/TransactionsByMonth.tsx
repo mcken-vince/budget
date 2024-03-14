@@ -3,8 +3,9 @@
 import { apiFetch } from '@helpers/clients';
 import { addxMonths } from '@helpers/date.helpers';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BudgetOverview } from '..';
+import { BudgetSummary } from '@components/Budgets/BudgetSummary';
 
 export const TransactionsByMonth = ({ date }: any) => {
   const { data: session } = useSession();
@@ -43,23 +44,38 @@ export const TransactionsByMonth = ({ date }: any) => {
     }
   }, [session?.auth_token, date]);
 
+  const totalAmount = useMemo(() => {
+    return budgets.reduce((acc, budget) => acc + budget.totalAmount, 0);
+  }, [budgets]);
+  const totalSpent = useMemo(() => {
+    return transactions.reduce(
+      (acc, transaction) => acc + transaction.amount,
+      0
+    );
+  }, [transactions]);
+
   return (
-    <div>
-      {budgets.map((budget: any) => (
-        <BudgetOverview
-          key={`budget-${budget?.name}-${date.month + date.year}`}
-          budget={budget}
-          budgetAmount={budget?.totalAmount}
-          transactions={transactions.filter((transaction) => {
-            return transaction?.idCategory === budget?.idCategory;
-          })}
-        />
-      ))}
-      <BudgetOverview
-        budget={{ name: '-- Uncategorized --' }}
-        transactions={uncategorizedTransactions}
-        hideBudgetAmount
-      />
+    <div className="flex flex-col md:flex-row md:gap-5">
+      <BudgetSummary totalAmount={totalAmount} totalSpent={totalSpent} />
+      <div className="grow">
+        {budgets.map((budget: any) => (
+          <BudgetOverview
+            key={`budget-${budget?.name}-${date.month + date.year}`}
+            budget={budget}
+            budgetAmount={budget?.totalAmount}
+            transactions={transactions.filter((transaction) => {
+              return transaction?.idCategory === budget?.idCategory;
+            })}
+          />
+        ))}
+        {!!uncategorizedTransactions?.length && (
+          <BudgetOverview
+            budget={{ name: '-- Uncategorized --' }}
+            transactions={uncategorizedTransactions}
+            hideBudgetAmount
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BudgetService } from './budget.service';
-import { BudgetEntity, TransactionEntity } from '@entities';
+import { BudgetEntity } from '@entities';
 import { User } from '@decorators/user.decorator';
 import { DeleteResponse, BudgetDto } from '@dto';
 import { AuthGuard } from '@guards/auth.guard';
@@ -46,11 +46,11 @@ export class BudgetController {
   //   return this._transactionService.update(id, input, user.id);
   // }
 
-  // @Delete(':id')
-  // async remove(
-  //   @Param('id') id: number,
-  //   @User() user: any
-  // ): Promise<DeleteResponse> {
-  //   return this._transactionService.delete(id, user.id);
-  // }
+  @Delete(':id')
+  async remove(
+    @Param('id') id: number,
+    @User() user: any
+  ): Promise<DeleteResponse> {
+    return this._budgetService.delete(id, user.id);
+  }
 }

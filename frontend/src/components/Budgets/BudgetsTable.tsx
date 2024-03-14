@@ -1,11 +1,6 @@
 'use client';
 
-import { apiFetch } from '@helpers/clients';
 import { useSession } from 'next-auth/react';
-import { DropdownMenu } from '../DropdownMenu';
-import { TrashIcon, PencilIcon } from '@heroicons/react/16/solid';
-import { formatDate } from '@helpers';
-import { CategorySelector } from '../Category/CategorySelector';
 import { Table } from '@components/Table';
 
 export interface BudgetsTableProps {

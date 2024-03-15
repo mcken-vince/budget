@@ -1,7 +1,7 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { Table } from '@components/Table';
+import { formatMoney } from '@helpers/money.helpers';
 
 export interface BudgetsTableProps {
   budgets: any[];
@@ -16,8 +16,6 @@ export const BudgetsTable = ({
   updateBudget,
   removeBudget,
 }: BudgetsTableProps) => {
-  const { data: session } = useSession();
-
   return (
     <Table
       columns={[
@@ -27,7 +25,7 @@ export const BudgetsTable = ({
           getValue: (row) =>
             categories.find((category) => category.id === row.idCategory)?.name,
         },
-        { name: 'Amount', getValue: (row) => `$${row.totalAmount}` },
+        { name: 'Amount', getValue: (row) => formatMoney(row.totalAmount) },
       ]}
       rows={budgets}
       removeRow={removeBudget}

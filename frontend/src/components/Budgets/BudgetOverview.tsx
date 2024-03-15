@@ -2,6 +2,7 @@
 
 import { ProgressBar } from '@components/Progress';
 import { formatDate } from '@helpers/date.helpers';
+import { formatMoney } from '@helpers/money.helpers';
 import { useMemo, useState } from 'react';
 
 export interface BudgetOverviewProps {
@@ -39,8 +40,8 @@ export const BudgetOverview = ({
       <div className="flex justify-between mb-1">
         <h3>{budget?.name}</h3>
         <h3>
-          ${spend.toFixed(2)}
-          {hideBudgetAmount ? null : ` of $${budgetAmount.toFixed(2)}`}
+          {formatMoney(spend)}
+          {hideBudgetAmount ? null : ` of ${formatMoney(budgetAmount)}`}
         </h3>
       </div>
       <ProgressBar
@@ -82,7 +83,7 @@ export const BudgetOverview = ({
                     {formatDate(transaction?.date)}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-right">
-                    ${transaction?.amount.toFixed(2)}
+                    {formatMoney(transaction?.amount)}
                   </td>
                 </tr>
               ))}

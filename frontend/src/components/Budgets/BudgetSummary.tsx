@@ -1,3 +1,5 @@
+import { formatMoney } from '@helpers/money.helpers';
+
 export interface BudgetSummaryProps {
   budgetIncome: number;
   budgetSpending: number;
@@ -15,11 +17,11 @@ export const BudgetSummary = ({
       <div className="flex justify-between md:flex-col">
         <div className="flex flex-col md:flex-row justify-between text-green-400">
           <h3 className="text-lg font-bold">Income</h3>
-          <p className="text-2xl font-bold">${budgetIncome.toFixed(2)}</p>
+          <p className="text-2xl font-bold">{formatMoney(budgetIncome)}</p>
         </div>
         <div className="flex flex-col md:flex-row justify-between text-red-400">
           <h3 className="text-lg font-bold">Total Spending</h3>
-          <p className="text-2xl font-bold">-${budgetSpending.toFixed(2)}</p>
+          <p className="text-2xl font-bold">-{formatMoney(budgetSpending)}</p>
         </div>
         <span className="hidden md:flex">
           <span className="h-px flex-1 bg-black"></span>
@@ -28,9 +30,7 @@ export const BudgetSummary = ({
           className={`flex flex-col md:flex-row justify-between ${remainingTextColor}`}
         >
           <h3 className="text-lg font-bold">Remaining</h3>
-          <p className="text-2xl font-bold">
-            {remaining < 0 ? '-' : ''}${remaining.toFixed(2)}
-          </p>
+          <p className="text-2xl font-bold">{formatMoney(remaining)}</p>
         </div>
       </div>
     </div>

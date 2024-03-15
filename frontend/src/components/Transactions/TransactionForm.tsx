@@ -10,12 +10,17 @@ import { Modal } from '../Modal';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePopup } from '@hooks';
+import { Select } from '@components/Inputs/Select';
 
 export interface TransactionFormProps {
   addTransaction: (newTransaction: any) => void;
+  accounts: any[];
 }
 
-export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
+export const TransactionForm = ({
+  accounts,
+  addTransaction,
+}: TransactionFormProps) => {
   const createTransactionSchema = yup.object().shape({
     idBudget: yup.number().nullable(),
     name: yup.string().min(1).max(255).required('Name is required.'),
@@ -25,6 +30,7 @@ export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
       .number()
       .required('Amount is required.')
       .transform((value) => parseFloat(value.toFixed(2))),
+    idAccount: yup.number().min(0),
   });
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -42,6 +48,7 @@ export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
       description: '',
       date: new Date(),
       amount: 0.0,
+      idAccount: 0,
     },
   });
 
@@ -149,6 +156,28 @@ export const TransactionForm = ({ addTransaction }: TransactionFormProps) => {
                   name="date"
                   type="date"
                   error={errors?.date?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="col-span-6">
+            <Controller
+              name="idAccount"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Account"
+                  name="account"
+                  error={errors?.idAccount?.message}
+                  options={[
+                    { label: 'Cash', value: 0 },
+                    ...accounts.map((account) => ({
+                      label: account.name,
+                      value: account.id,
+                    })),
+                  ]}
                 />
               )}
             />

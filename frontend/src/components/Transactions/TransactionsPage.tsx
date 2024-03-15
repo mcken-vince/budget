@@ -15,6 +15,7 @@ export default function TransactionsPage() {
   const { data: session } = useSession();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [accounts, setAccounts] = useState<any[]>([]);
 
   const addCategory = useMemo(() => addToState(setCategories), []);
   const addTransaction = useMemo(() => addToState(setTransactions), []);
@@ -30,13 +31,20 @@ export default function TransactionsPage() {
           setTransactions(Array.isArray(response) ? response : []);
         }
       })();
-
       (async function fetchCategories() {
         if (session?.auth_token) {
           const response = await apiFetch('category', {
             token: session?.auth_token,
           });
           setCategories(Array.isArray(response) ? response : []);
+        }
+      })();
+      (async function fetchAccounts() {
+        if (session?.auth_token) {
+          const response = await apiFetch('account', {
+            token: session?.auth_token,
+          });
+          setAccounts(Array.isArray(response) ? response : []);
         }
       })();
     }
@@ -47,7 +55,10 @@ export default function TransactionsPage() {
       <SectionHeader title="Transactions">
         <>
           <CategoryForm addCategory={addCategory} categories={categories} />
-          <TransactionForm addTransaction={addTransaction} />
+          <TransactionForm
+            addTransaction={addTransaction}
+            accounts={accounts}
+          />
         </>
       </SectionHeader>
 

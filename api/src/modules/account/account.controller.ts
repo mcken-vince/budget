@@ -49,11 +49,11 @@ export class AccountController {
   //   return this._categoryService.update(id, input, user.id);
   // }
 
-  // @Delete(':id')
-  // async remove(
-  //   @Param('id') id: number,
-  //   @User() user: any
-  // ): Promise<DeleteResponse> {
-  //   return this._categoryService.delete(id, user.id);
-  // }
+  @Delete(':id')
+  async remove(
+    @Param('id') id: number,
+    @User() user: any
+  ): Promise<DeleteResponse> {
+    return this._accountService.delete(id, user.id);
+  }
 }

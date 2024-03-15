@@ -2,21 +2,32 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryEntity, TransactionEntity } from '@entities';
 import { TransactionDto, DeleteResponse } from '@dto';
 import { Op } from 'sequelize';
+import { AccountService } from '../account/account.service';
 @Injectable()
 export class TransactionService {
   constructor(
     @Inject('TRANSACTION_REPOSITORY')
-    private readonly _transactionRepository: typeof TransactionEntity
+    private readonly _transactionRepository: typeof TransactionEntity,
+    private _accountService: AccountService
   ) {}
 
   async create(
     input: TransactionDto,
     idUser: number
   ): Promise<TransactionEntity> {
-    return await this._transactionRepository.create({
+    const newTransaction = await this._transactionRepository.create({
       ...input,
       idUser,
     });
+    if (newTransaction.idAccount) {
+      await this._accountService.updateBalance(
+        newTransaction.idAccount,
+        input.amount,
+        idUser
+      );
+    }
+
+    return newTransaction;
   }
 
   async findAll(idUser: number): Promise<TransactionEntity[]> {
@@ -60,8 +71,31 @@ export class TransactionService {
   ): Promise<TransactionEntity> {
     let transaction = await this.findOne(id, idUser);
     if (!transaction) throw new NotFoundException('Transaction not found');
-
+    const prevAccount = transaction.idAccount;
+    const prevAmount = transaction.amount;
     transaction = await transaction.update({ ...input });
+    const newAccount = transaction.idAccount;
+    const newAmount = transaction.amount;
+    if (prevAccount === newAccount) {
+      // update account balance
+      await this._accountService.updateBalance(
+        transaction.idAccount,
+        prevAmount - transaction.amount,
+        idUser
+      );
+    } else {
+      // different account
+      if (prevAmount === newAmount) {
+        await this._accountService.transfer(prevAccount, newAccount, newAmount);
+      } else {
+        await this._accountService.updateBalance(
+          prevAccount,
+          prevAmount,
+          idUser
+        );
+        await this._accountService.updateBalance(newAccount, newAmount, idUser);
+      }
+    }
     return transaction;
   }
 

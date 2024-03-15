@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { CategoryController } from './categorycontroller';
+import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
 import { categoryProviders } from './category.providers';
 import { JwtModule, JwtService } from '@nestjs/jwt';

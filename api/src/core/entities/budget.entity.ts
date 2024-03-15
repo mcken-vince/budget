@@ -20,7 +20,7 @@ export class BudgetEntity extends BaseEntity {
   idUser: number;
 
   @ForeignKey(() => CategoryEntity)
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: true })
   idCategory: number;
 
   @Max(255)

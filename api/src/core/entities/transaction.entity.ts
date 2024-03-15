@@ -12,12 +12,17 @@ import { BaseEntity } from './base.entity';
 import { BudgetEntity } from './budget.entity';
 import { UserEntity } from './user.entity';
 import { CategoryEntity } from './category.entity';
+import { AccountEntity } from './account.entity';
 
 @Table({ tableName: 'Transaction' })
 export class TransactionEntity extends BaseEntity {
   @ForeignKey(() => UserEntity)
   @Column({ type: DataType.INTEGER, allowNull: false })
   idUser: number;
+
+  @ForeignKey(() => AccountEntity)
+  @Column({ type: DataType.INTEGER, allowNull: true })
+  idAccount: number;
 
   @ForeignKey(() => BudgetEntity)
   @Column({ type: DataType.INTEGER, allowNull: true })
@@ -52,4 +57,7 @@ export class TransactionEntity extends BaseEntity {
 
   @BelongsTo(() => CategoryEntity)
   category: CategoryEntity;
+
+  @BelongsTo(() => AccountEntity)
+  account: AccountEntity;
 }

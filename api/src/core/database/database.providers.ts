@@ -5,6 +5,7 @@ import {
   BudgetEntity,
   TransactionEntity,
   CategoryEntity,
+  AccountEntity,
 } from '@entities';
 
 export const databaseProviders = [
@@ -31,6 +32,7 @@ export const databaseProviders = [
         BudgetEntity,
         TransactionEntity,
         CategoryEntity,
+        AccountEntity,
       ]);
       // await sequelize.sync({ force: true });
       return sequelize;

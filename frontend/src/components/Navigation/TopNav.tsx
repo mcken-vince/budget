@@ -41,6 +41,9 @@ export const TopNav = () => {
                 </li>
                 <li>
                   <NavLink href="/categories" label="Categories" />
+                </li>{' '}
+                <li>
+                  <NavLink href="/accounts" label="Accounts" />
                 </li>
               </ul>
             )}

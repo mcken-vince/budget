@@ -40,14 +40,14 @@ export class AccountController {
     return this._accountService.create(input, user.id);
   }
 
-  // @Put(':id')
-  // async update(
-  //   @Param('id') id: number,
-  //   @Body() input: CategoryDto,
-  //   @User() user: any
-  // ): Promise<CategoryEntity> {
-  //   return this._categoryService.update(id, input, user.id);
-  // }
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() input: AccountDto,
+    @User() user: any
+  ): Promise<AccountEntity> {
+    return this._accountService.update(id, input, user.id);
+  }
 
   @Delete(':id')
   async remove(

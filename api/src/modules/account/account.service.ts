@@ -72,15 +72,15 @@ export class AccountService {
     return { success: !!response, id };
   }
 
-  // async update(
-  //   id: number,
-  //   input: CategoryDto,
-  //   idUser: number
-  // ): Promise<CategoryEntity> {
-  //   let category = await this.findOne(id, idUser);
-  //   if (!category) throw new NotFoundException('Category not found');
+  async update(
+    id: number,
+    input: AccountDto,
+    idUser: number
+  ): Promise<AccountEntity> {
+    let account = await this.findOne(id, idUser);
+    if (!account) throw new NotFoundException('Account not found');
 
-  //   category = await category.update({ ...input });
-  //   return category;
-  // }
+    account = await account.update({ ...input });
+    return account;
+  }
 }

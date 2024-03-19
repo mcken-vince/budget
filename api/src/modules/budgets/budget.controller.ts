@@ -37,14 +37,14 @@ export class BudgetController {
     return this._budgetService.create(input, user.id);
   }
 
-  // @Put(':id')
-  // async update(
-  //   @Param('id') id: number,
-  //   @Body() input: TransactionDto,
-  //   @User() user: any
-  // ): Promise<TransactionEntity> {
-  //   return this._transactionService.update(id, input, user.id);
-  // }
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() input: BudgetDto,
+    @User() user: any
+  ): Promise<BudgetEntity> {
+    return this._budgetService.update(id, input, user.id);
+  }
 
   @Delete(':id')
   async remove(

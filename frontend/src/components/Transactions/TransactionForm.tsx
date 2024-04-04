@@ -171,13 +171,10 @@ export const TransactionForm = ({
                   label="Account"
                   name="account"
                   error={errors?.idAccount?.message}
-                  options={[
-                    { label: 'Cash', value: 0 },
-                    ...accounts.map((account) => ({
-                      label: account.name,
-                      value: account.id,
-                    })),
-                  ]}
+                  options={accounts.map((account) => ({
+                    label: account.name,
+                    value: account.id,
+                  }))}
                 />
               )}
             />

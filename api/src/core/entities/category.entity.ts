@@ -11,7 +11,7 @@ import {
 import { BaseEntity } from './base.entity';
 import { TransactionEntity } from './transaction.entity';
 import { UserEntity } from './user.entity';
-import { BudgetEntity } from './budget.entity';
+import { BudgetItemEntity } from './budget-item.entity';
 
 @Table({ tableName: 'Category' })
 export class CategoryEntity extends BaseEntity {
@@ -34,6 +34,6 @@ export class CategoryEntity extends BaseEntity {
   @BelongsTo(() => CategoryEntity)
   parent: CategoryEntity;
 
-  @HasMany(() => BudgetEntity, { foreignKey: 'idCategory' })
-  budgets: BudgetEntity[];
+  @HasMany(() => BudgetItemEntity, { foreignKey: 'idCategory' })
+  budgetItems: BudgetItemEntity[];
 }

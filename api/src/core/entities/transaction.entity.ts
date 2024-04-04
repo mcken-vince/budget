@@ -24,10 +24,6 @@ export class TransactionEntity extends BaseEntity {
   @Column({ type: DataType.INTEGER, allowNull: true })
   idAccount: number;
 
-  @ForeignKey(() => BudgetEntity)
-  @Column({ type: DataType.INTEGER, allowNull: true })
-  idBudget: number;
-
   @ForeignKey(() => CategoryEntity)
   @Column({ type: DataType.INTEGER, allowNull: true })
   idCategory: number;
@@ -51,13 +47,14 @@ export class TransactionEntity extends BaseEntity {
   @Column({ type: DataType.FLOAT, allowNull: false })
   amount: number;
 
-  // Relationships
-  @BelongsTo(() => BudgetEntity)
-  budget: BudgetEntity;
+  @Column({
+    type: DataType.STRING(10),
+    allowNull: false,
+    defaultValue: 'expense',
+  })
+  type: 'income' | 'expense';
 
+  // Relationships
   @BelongsTo(() => CategoryEntity)
   category: CategoryEntity;
-
-  @BelongsTo(() => AccountEntity)
-  account: AccountEntity;
 }

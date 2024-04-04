@@ -6,6 +6,7 @@ import {
   TransactionEntity,
   CategoryEntity,
   AccountEntity,
+  BudgetItemEntity,
 } from '@entities';
 
 export const databaseProviders = [
@@ -30,6 +31,7 @@ export const databaseProviders = [
       sequelize.addModels([
         UserEntity,
         BudgetEntity,
+        BudgetItemEntity,
         TransactionEntity,
         CategoryEntity,
         AccountEntity,

@@ -19,10 +19,6 @@ export class BudgetEntity extends BaseEntity {
   @Column({ type: DataType.INTEGER, allowNull: false })
   idUser: number;
 
-  @ForeignKey(() => CategoryEntity)
-  @Column({ type: DataType.INTEGER, allowNull: true })
-  idCategory: number;
-
   @Max(255)
   @Column({ type: DataType.STRING(255), allowNull: false })
   name: string;
@@ -40,14 +36,4 @@ export class BudgetEntity extends BaseEntity {
 
   @Column({ type: DataType.FLOAT })
   remainingAmount: number;
-
-  // Relationships
-  @BelongsTo(() => UserEntity)
-  user: UserEntity;
-
-  @BelongsTo(() => CategoryEntity)
-  category: CategoryEntity;
-
-  @HasMany(() => TransactionEntity, { foreignKey: 'idBudget' })
-  transactions: TransactionEntity[];
 }

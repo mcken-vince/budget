@@ -28,7 +28,7 @@ export const Input = ({
 }: InputProps) => {
   return (
     <div>
-      <label htmlFor={name} className="block text-xs font-medium text-gray-700">
+      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
         {label}
       </label>
 

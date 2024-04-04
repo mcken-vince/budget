@@ -2,6 +2,7 @@
 
 import { Table } from '@components/Table';
 import { formatMoney } from '@helpers/money.helpers';
+import { capitalize } from '@helpers/string.helpers';
 
 export interface AccountsTableProps {
   accounts: any[];
@@ -16,9 +17,10 @@ export const AccountsTable = ({
     <Table
       columns={[
         { name: 'Name', getValue: (row) => row.name },
+        { name: 'Type', getValue: (row) => capitalize(row.type) },
         {
           name: 'Balance',
-          getValue: (row) => formatMoney(row.balance),
+          getValue: (row) => formatMoney(row.currentBalance),
         },
       ]}
       rows={accounts}

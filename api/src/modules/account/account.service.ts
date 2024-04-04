@@ -60,11 +60,11 @@ export class AccountService {
     return true;
   }
 
-  // async findOne(id: number, idUser: number): Promise<CategoryEntity> {
-  //   return await this._categoryRepository.findOne({
-  //     where: { id, idUser },
-  //   });
-  // }
+  async findOne(id: number, idUser: number): Promise<AccountEntity> {
+    return await this._accountRepository.findOne({
+      where: { id, idUser },
+    });
+  }
 
   async delete(id: number, idUser: number): Promise<DeleteResponse> {
     const response = await this._accountRepository.destroy({

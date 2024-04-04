@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePopup } from '@hooks';
 import { Select } from '../Inputs/Select';
+import { capitalize } from '@helpers/string.helpers';
 
 export interface AccountFormProps {
   addAccount: (newCategory: any) => void;
@@ -18,8 +19,16 @@ export interface AccountFormProps {
 
 export const AccountForm = ({ addAccount }: AccountFormProps) => {
   const createAccountSchema = yup.object().shape({
+    type: yup
+      .string()
+      .min(1, 'Please select an account type.')
+      .max(50, 'Invalid type selection.')
+      .required('Type is required.'),
+    initialBalance: yup
+      .number()
+      .min(0)
+      .required('Initial balance is required.'),
     name: yup.string().min(1).max(50).required('Name is required.'),
-    balance: yup.number().min(0).required('Balance is required.'),
   });
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -27,13 +36,15 @@ export const AccountForm = ({ addAccount }: AccountFormProps) => {
   const {
     control,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(createAccountSchema),
     defaultValues: {
       name: '',
-      balance: 0,
+      initialBalance: 0,
+      type: 'cash',
     },
   });
 
@@ -51,12 +62,16 @@ export const AccountForm = ({ addAccount }: AccountFormProps) => {
         token: session?.auth_token + '',
       });
       if (!response) throw new Error('Account not created');
+      if (response.statusCode) throw new Error(response.message);
       addAccount(response);
       setShowForm(false);
       openPopup({ title: 'New account added!', type: 'success' });
     } catch (error) {
       console.log({ error });
-      openPopup({ title: 'Error adding account!', type: 'error' });
+      openPopup({
+        title: 'Error adding account!',
+        type: 'error',
+      });
     }
   };
   return (
@@ -75,6 +90,47 @@ export const AccountForm = ({ addAccount }: AccountFormProps) => {
         >
           <div className="col-span-6">
             <Controller
+              name="type"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setValue('name', `${capitalize(e.target.value)}`.trim());
+                  }}
+                  label="Account Type"
+                  name="type"
+                  error={errors?.type?.message}
+                  options={[
+                    { label: 'Cash', value: 'cash' },
+                    { label: 'Chequing', value: 'chequing' },
+                    { label: 'Savings', value: 'savings' },
+                    { label: 'Other', value: 'other' },
+                  ]}
+                />
+              )}
+            />
+          </div>
+
+          <div className="col-span-6">
+            <Controller
+              name="initialBalance"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Initial Balance"
+                  name="initialBalance"
+                  type="number"
+                  error={errors?.initialBalance?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="col-span-6">
+            <Controller
               name="name"
               control={control}
               render={({ field }) => (
@@ -86,23 +142,6 @@ export const AccountForm = ({ addAccount }: AccountFormProps) => {
                   name="name"
                   type="text"
                   error={errors?.name?.message}
-                />
-              )}
-            />
-          </div>
-          <div className="col-span-6">
-            <Controller
-              name="balance"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  autoFocus
-                  value={field.value}
-                  onChange={field.onChange}
-                  label="Balance"
-                  name="balance"
-                  type="number"
-                  error={errors?.balance?.message}
                 />
               )}
             />

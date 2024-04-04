@@ -12,6 +12,7 @@ export class AccountService {
   async create(input: AccountDto, idUser: number): Promise<AccountEntity> {
     return await this._accountRepository.create({
       ...input,
+      currentBalance: input.initialBalance,
       idUser,
     });
   }
@@ -31,8 +32,8 @@ export class AccountService {
       where: { id, idUser },
     });
     if (!account) throw new NotFoundException('Account not found');
-    const newBalance = account.balance - amount;
-    account = await account.update({ balance: newBalance });
+    const newBalance = account.currentBalance - amount;
+    account = await account.update({ currentBalance: newBalance });
     return newBalance;
   }
 
@@ -51,8 +52,8 @@ export class AccountService {
     if (!from || !to) throw new NotFoundException('Account not found');
     // if (from.balance < amount) throw new Error('Insufficient funds');
 
-    from.balance -= amount;
-    to.balance += amount;
+    from.currentBalance -= amount;
+    to.currentBalance += amount;
     await from.save();
     await to.save();
 

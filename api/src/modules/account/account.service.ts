@@ -10,6 +10,12 @@ export class AccountService {
   ) {}
 
   async create(input: AccountDto, idUser: number): Promise<AccountEntity> {
+    const duplicateAccount = await this._accountRepository.findOne({
+      where: { name: input.name, idUser },
+      attributes: ['name'],
+    });
+    if (duplicateAccount)
+      throw new Error('Account with that name already exists.');
     return await this._accountRepository.create({
       ...input,
       currentBalance: input.initialBalance,

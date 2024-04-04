@@ -11,10 +11,6 @@ export class BudgetDto {
   @MaxLength(255)
   name: string;
 
-  @IsOptional()
-  @IsNumber()
-  idCategory?: number;
-
   @IsNotEmpty({ message: 'Start date is required' })
   @IsDateString()
   startDate: Date;
@@ -24,10 +20,10 @@ export class BudgetDto {
   endDate: Date;
 
   @IsNotEmpty({ message: 'Total amount is required' })
-  @IsNumber()
+  @IsNumber({ maxDecimalPlaces: 2 })
   totalAmount: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumber({ maxDecimalPlaces: 2 })
   remainingAmount?: number;
 }

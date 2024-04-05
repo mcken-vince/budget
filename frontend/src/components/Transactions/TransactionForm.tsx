@@ -15,14 +15,16 @@ import { Select } from '@components/Inputs/Select';
 export interface TransactionFormProps {
   addTransaction: (newTransaction: any) => void;
   accounts: any[];
+  categories: any[];
 }
 
 export const TransactionForm = ({
   accounts,
+  categories,
   addTransaction,
 }: TransactionFormProps) => {
   const createTransactionSchema = yup.object().shape({
-    idBudget: yup.number().nullable(),
+    idCategory: yup.number().required('Please select a category.'),
     name: yup.string().min(1).max(255).required('Name is required.'),
     description: yup.string(),
     date: yup.date().required('Date is required.'),
@@ -30,7 +32,7 @@ export const TransactionForm = ({
       .number()
       .required('Amount is required.')
       .transform((value) => parseFloat(value.toFixed(2))),
-    idAccount: yup.number().min(0),
+    idAccount: yup.number().required('Please select an account.'),
   });
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -43,12 +45,12 @@ export const TransactionForm = ({
   } = useForm({
     resolver: yupResolver(createTransactionSchema),
     defaultValues: {
-      idBudget: null,
       name: '',
       description: '',
       date: new Date(),
       amount: 0.0,
-      idAccount: 0,
+      idAccount: accounts?.find((account) => account?.isDefault) ?? undefined,
+      idCategory: undefined,
     },
   });
 
@@ -174,6 +176,25 @@ export const TransactionForm = ({
                   options={accounts.map((account) => ({
                     label: account.name,
                     value: account.id,
+                  }))}
+                />
+              )}
+            />
+          </div>
+          <div className="col-span-6">
+            <Controller
+              name="idCategory"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Category"
+                  name="category"
+                  error={errors?.idCategory?.message}
+                  options={categories.map((category) => ({
+                    label: category.name,
+                    value: category.id,
                   }))}
                 />
               )}

@@ -58,6 +58,7 @@ export default function TransactionsPage() {
           <TransactionForm
             addTransaction={addTransaction}
             accounts={accounts}
+            categories={categories}
           />
         </>
       </SectionHeader>

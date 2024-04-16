@@ -33,6 +33,10 @@ export const TransactionForm = ({
       .required('Amount is required.')
       .transform((value) => parseFloat(value.toFixed(2))),
     idAccount: yup.number().required('Please select an account.'),
+    type: yup
+      .string()
+      .oneOf(['expense', 'income'])
+      .required('Please select a type.'),
   });
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -51,6 +55,7 @@ export const TransactionForm = ({
       amount: 0.0,
       idAccount: accounts?.find((account) => account?.isDefault) ?? undefined,
       idCategory: undefined,
+      type: 'expense',
     },
   });
 
@@ -137,6 +142,26 @@ export const TransactionForm = ({
                   name="amount"
                   type="number"
                   error={errors?.amount?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="col-span-6">
+            <Controller
+              name="type"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Type"
+                  name="type"
+                  hideBlankOption
+                  options={[
+                    { label: 'Expense', value: 'expense' },
+                    { label: 'Income', value: 'income' },
+                  ]}
+                  error={errors?.type?.message}
                 />
               )}
             />

@@ -6,123 +6,92 @@ import { DropdownMenu } from '../DropdownMenu';
 import { TrashIcon, PencilIcon } from '@heroicons/react/16/solid';
 import { formatDate } from '@helpers';
 import { CategorySelector } from '../Category/CategorySelector';
+import { Select } from '@components/Inputs/Select';
+import { Table } from '@components/Table';
 
 export interface TransactionsTableProps {
   transactions: any[];
   categories: any[];
+  accounts: any[];
   updateTransaction: (newTransaction: any) => void;
 }
 
 export const TransactionsTable = ({
   transactions,
   categories,
+  accounts,
   updateTransaction,
 }: TransactionsTableProps) => {
   const { data: session } = useSession();
 
+  async function callUpdateTransaction(transaction: any) {
+    try {
+      const response = await apiFetch(`transactions/${transaction.id}`, {
+        method: 'PUT',
+        data: transaction,
+        token: session?.auth_token,
+      });
+      if (!response?.id) throw new Error('Transaction not updated');
+      updateTransaction(response);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-        <thead className="text-left">
-          <tr>
-            <th className="px-4 py-2">
-              <label htmlFor="SelectAll" className="sr-only">
-                Select All
-              </label>
-
-              <input
-                type="checkbox"
-                id="SelectAll"
-                className="size-5 rounded border-gray-300"
-              />
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
-              Name
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
-              Description
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
-              Date
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
-              Category
-            </th>
-
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
-              Amount
-            </th>
-          </tr>
-        </thead>
-
-        <tbody className="divide-y divide-slate-200">
-          {transactions?.map((transaction, idx) => (
-            <tr key={`transaction-${idx}`} className="odd:bg-slate-50">
-              <td className="px-4 py-2">
-                <label className="sr-only" htmlFor={`Row${idx}`}>
-                  Row {idx}
-                </label>
-
-                <input
-                  className="size-5 rounded border-gray-300"
-                  type="checkbox"
-                  id={`Row${idx}`}
-                />
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 font-medium text-slate-900">
-                {transaction?.name}
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-slate-700">
-                {transaction?.description}
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-slate-700">
-                {formatDate(transaction?.date)}
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-slate-700">
-                <CategorySelector
-                  uniqueId={transaction?.id}
-                  category={transaction?.category}
-                  categories={categories}
-                  updateTransactionCategory={(category: any) =>
-                    updateTransaction({
-                      ...transaction,
-                      category,
-                      idCategory: category?.id,
-                    })
-                  }
-                />
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-slate-700">
-                ${transaction.amount.toFixed(2)}
-              </td>
-              {/* <td>
-                <DropdownMenu
-                  uniqueId={transaction?.id}
-                  items={[
-                    {
-                      label: 'Edit',
-                      icon: PencilIcon,
-                      onClick: () => {
-                        console.log('Edit');
-                      },
-                    },
-                    {
-                      label: 'Delete',
-                      icon: TrashIcon,
-                      onClick: () => {
-                        apiFetch(`transactions/${transaction?.id}`, {
-                          method: 'DELETE',
-                          token: session?.auth_token,
-                        });
-                      },
-                    },
-                  ]}
-                />
-              </td> */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Table
+      columns={[
+        { name: 'Name', getValue: (row) => row.name },
+        { name: 'Description', getValue: (row) => row.description },
+        { name: 'Date', getValue: (row) => formatDate(row.date) },
+        {
+          name: 'Account',
+          getValue: (row) =>
+            accounts.find((account) => account.id === row.idAccount)?.name,
+        },
+        {
+          name: 'Category',
+          getValue: (row) => (
+            <CategorySelector
+              uniqueId={row.id}
+              category={categories.find(
+                (category) => category.id === row.idCategory
+              )}
+              categories={categories}
+              updateState={(category: any) =>
+                updateTransaction({
+                  ...row,
+                  category,
+                  idCategory: category?.id,
+                })
+              }
+            />
+          ),
+        },
+        {
+          name: 'Type',
+          getValue: (row) => (
+            <Select
+              value={row.type}
+              name="type"
+              onChange={(e) => {
+                callUpdateTransaction({ ...row, type: e.target.value });
+              }}
+              hideBlankOption
+              options={[
+                { label: 'Expense', value: 'expense' },
+                { label: 'Income', value: 'income' },
+              ]}
+            />
+          ),
+        },
+        { name: 'Amount', getValue: (row) => `$${row.amount.toFixed(2)}` },
+      ]}
+      name="Transactions"
+      removeRow={(id) => {
+        return;
+      }}
+      rows={transactions}
+    />
   );
 };

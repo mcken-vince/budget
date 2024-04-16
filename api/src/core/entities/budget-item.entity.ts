@@ -27,6 +27,13 @@ export class BudgetItemEntity extends BaseEntity {
   @Column({ type: DataType.FLOAT, allowNull: false })
   amount: number;
 
+  @Column({
+    type: DataType.STRING(10),
+    allowNull: false,
+    defaultValue: 'spending',
+  })
+  type: 'spending' | 'income';
+
   // Relations
   @BelongsTo(() => CategoryEntity)
   category: CategoryEntity;

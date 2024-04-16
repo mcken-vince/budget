@@ -2,6 +2,7 @@
 
 import { Table } from '@components/Table';
 import { formatMoney } from '@helpers/money.helpers';
+import { CategorySelector } from '..';
 
 export interface BudgetsTableProps {
   budgets: any[];
@@ -22,8 +23,17 @@ export const BudgetsTable = ({
         { name: 'Name', getValue: (row) => row.name },
         {
           name: 'Category',
-          getValue: (row) =>
-            categories.find((category) => category.id === row.idCategory)?.name,
+          getValue: (row) => (
+            <CategorySelector
+              category={categories.find(
+                (category) => category.id === row.idCategory
+              )}
+              categories={categories}
+              uniqueId={row.id}
+              endpoint={`budget/${row.id}`}
+              updateState={updateBudget}
+            />
+          ),
         },
         { name: 'Amount', getValue: (row) => formatMoney(row.totalAmount) },
       ]}

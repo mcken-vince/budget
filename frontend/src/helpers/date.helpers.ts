@@ -11,6 +11,7 @@ export const addxMonths = (x: number, date?: Date) => {
 export const getMonthYearObject = (date: Date) => {
   return {
     month: date.toLocaleString('default', { month: 'long' }),
+    monthNumber: date.getMonth() + 1,
     year: date.getFullYear(),
   };
 };

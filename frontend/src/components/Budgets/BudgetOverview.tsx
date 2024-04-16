@@ -38,7 +38,10 @@ export const BudgetOverview = ({
       }}
     >
       <div className="flex justify-between mb-1">
-        <h3>{budget?.name}</h3>
+        <h3>
+          {budget?.category?.name ? budget.category.name + ': ' : ''}
+          {budget?.name}
+        </h3>
         <h3>
           {formatMoney(spend)}
           {hideBudgetAmount ? null : ` of ${formatMoney(budgetAmount)}`}

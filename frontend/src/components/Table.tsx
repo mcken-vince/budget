@@ -3,13 +3,16 @@
 import { apiFetch } from '@helpers/clients';
 import { useSession } from 'next-auth/react';
 import { TrashIcon } from '@heroicons/react/16/solid';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { usePopup } from '@hooks/usePopup';
 
 export interface TableProps {
   name: string;
   rows: any[];
-  columns: { name: string; getValue: (row: any) => string | number }[];
+  columns: {
+    name: string;
+    getValue: (row: any) => string | number | ReactNode;
+  }[];
   removeRow: (idRow: string | string[]) => void;
 }
 

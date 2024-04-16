@@ -9,12 +9,14 @@ export const CategorySelector = ({
   uniqueId,
   category,
   categories,
-  updateTransactionCategory,
+  endpoint = `transactions/${uniqueId}/category`,
+  updateState,
 }: {
   uniqueId: string;
   category: any;
   categories: any[];
-  updateTransactionCategory: (category: any) => void;
+  endpoint?: string;
+  updateState: (category: any) => void;
 }) => {
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -25,19 +27,19 @@ export const CategorySelector = ({
 
     try {
       setLoading(true);
-      const response = await apiFetch(`transactions/${uniqueId}/category`, {
+      const response = await apiFetch(endpoint, {
         method: 'PUT',
         data: { idCategory },
         token: session?.auth_token,
       });
-      updateTransactionCategory(
+      updateState(
         categories.find((c) => c.id.toString() === idCategory.toString())
       );
-      openPopup({ title: 'Transaction category updated!', type: 'success' });
+      openPopup({ title: 'Category ID updated!', type: 'success' });
     } catch (error) {
       console.log({ error });
       openPopup({
-        title: 'Error updating transaction category!',
+        title: 'Error updating category ID!',
         type: 'error',
       });
     } finally {

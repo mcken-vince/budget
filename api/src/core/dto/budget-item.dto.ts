@@ -1,4 +1,4 @@
-import { IsNumber, IsString, MaxLength } from 'class-validator';
+import { IsIn, IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class BudgetItemDto {
   @IsNumber()
@@ -13,4 +13,8 @@ export class BudgetItemDto {
 
   @IsNumber({ maxDecimalPlaces: 2 })
   amount: number;
+
+  @IsString()
+  @IsIn(['expense', 'income'])
+  type: 'expense' | 'income';
 }

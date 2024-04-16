@@ -12,29 +12,33 @@ import { useSession } from 'next-auth/react';
 import { usePopup } from '@hooks';
 import { Select } from '@components/Inputs/Select';
 
-export interface BudgetFormProps {
-  addBudget: (newCategory: any) => void;
+export interface BudgetItemFormProps {
+  addBudgetItem: (newBudget: any) => void;
   categories: any[];
+  idBudget: number;
 }
 
-export const BudgetForm = ({ addBudget, categories }: BudgetFormProps) => {
-  const createBudgetSchema = yup.object().shape({
+export const BudgetItemForm = ({
+  addBudgetItem,
+  categories,
+  idBudget,
+}: BudgetItemFormProps) => {
+  console.log({ idBudget });
+  const createBudgetItemSchema = yup.object().shape({
     name: yup
       .string()
       .min(1, 'Name is required')
       .max(255)
       .required('Name is required'),
-    year: yup
+    amount: yup.number().required('Total amount is required'),
+    idCategory: yup
       .number()
-      .min(2000, 'Invalid value')
-      .max(2100, 'Invalid value')
-      .required('Year is required.'),
-    month: yup
-      .number()
-      .min(1, 'Month is required')
-      .max(12, 'Month is required')
-      .required('Month is required'),
-    totalAmount: yup.number().required('Total amount is required'),
+      .min(1, 'Please select a category')
+      .required('Category is required'),
+    type: yup
+      .string()
+      .oneOf(['expense', 'income'])
+      .required('Type is required'),
   });
   const { data: session } = useSession();
   const { openPopup } = usePopup();
@@ -45,30 +49,32 @@ export const BudgetForm = ({ addBudget, categories }: BudgetFormProps) => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(createBudgetSchema),
-    defaultValues: {
-      name: '',
-      year: new Date().getFullYear(),
-      month: new Date().getMonth(),
-      totalAmount: 0,
-    },
+    resolver: yupResolver(createBudgetItemSchema),
+    // defaultValues: {
+    //   type: 'expense',
+    //   name: '',
+    //   amount: 0,
+    //   idCategory: 0,
+    // },
   });
 
   const [showForm, setShowForm] = useState(false);
   useEffect(() => {
     if (!showForm) reset();
   }, [showForm, reset]);
-
+  console.log({ categories });
   const onSubmitHandler = async (data: any) => {
     try {
-      console.log({ data });
-      const response = await apiFetch('budget', {
+      const input = { ...data, idBudget };
+      console.log({ input });
+      const response = await apiFetch('budget/item', {
         method: 'POST',
-        data,
+        data: input,
         token: session?.auth_token + '',
       });
       if (!response) throw new Error('Budget not created');
-      addBudget(response);
+
+      addBudgetItem(response);
       setShowForm(false);
       openPopup({ title: 'New budget added!', type: 'success' });
     } catch (error) {
@@ -76,15 +82,17 @@ export const BudgetForm = ({ addBudget, categories }: BudgetFormProps) => {
       openPopup({ title: 'Error adding budget!', type: 'error' });
     }
   };
-  console.log({ categories });
+
   return (
     <>
-      <Button onClick={() => setShowForm(true)}>New Budget</Button>
+      <Button onClick={() => setShowForm(true)}>New Budget Item</Button>
       <Modal
-        title="New Budget"
+        title="New Budget Item"
         show={showForm}
         onClose={() => setShowForm(false)}
-        onSubmit={handleSubmit(onSubmitHandler)}
+        onSubmit={handleSubmit(onSubmitHandler, (errors) =>
+          console.log(errors)
+        )}
         closeButtonText="Cancel"
       >
         <form
@@ -110,7 +118,7 @@ export const BudgetForm = ({ addBudget, categories }: BudgetFormProps) => {
           </div>
           <div className="col-span-6">
             <Controller
-              name="totalAmount"
+              name="amount"
               control={control}
               render={({ field }) => (
                 <Input
@@ -119,76 +127,52 @@ export const BudgetForm = ({ addBudget, categories }: BudgetFormProps) => {
                   label="Amount"
                   name="amount"
                   type="number"
-                  error={errors?.totalAmount?.message}
+                  error={errors?.amount?.message}
                 />
               )}
             />
           </div>
-          {/* <div className="col-span-6">
+          <div className="col-span-6">
+            <Controller
+              name="type"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  hideBlankOption
+                  options={[
+                    {
+                      label: 'Expense',
+                      value: 'expense',
+                    },
+                    {
+                      label: 'Income',
+                      value: 'income',
+                    },
+                  ]}
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Type"
+                  name="type"
+                  error={errors?.type?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="col-span-6">
             <Controller
               name="idCategory"
               control={control}
               render={({ field }) => (
                 <Select
-                  options={categories
-                    ?.filter((category) => !category.idParent)
-                    .map((category) => ({
-                      label: category.name,
-                      value: category.id,
-                    }))}
+                  options={categories?.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                  }))}
                   value={field.value}
                   onChange={field.onChange}
                   label="Category"
                   name="name"
                   error={errors?.idCategory?.message}
-                />
-              )}
-            />
-          </div> */}
-          <div className="col-span-6">
-            <Controller
-              name="year"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  onChange={field.onChange}
-                  min={new Date().getFullYear() - 10}
-                  max={new Date().getFullYear() + 10}
-                  value={field.value}
-                  label="Year"
-                  name="year"
-                  type="number"
-                  error={errors?.year?.message}
-                />
-              )}
-            />
-          </div>
-          <div className="col-span-6">
-            <Controller
-              name="month"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  value={field.value}
-                  onChange={field.onChange}
-                  label="Month"
-                  name="month"
-                  blankOptionValue={0}
-                  options={[
-                    { label: 'January', value: 1 },
-                    { label: 'February', value: 2 },
-                    { label: 'March', value: 3 },
-                    { label: 'April', value: 4 },
-                    { label: 'May', value: 5 },
-                    { label: 'June', value: 6 },
-                    { label: 'July', value: 7 },
-                    { label: 'August', value: 8 },
-                    { label: 'September', value: 9 },
-                    { label: 'October', value: 10 },
-                    { label: 'November', value: 11 },
-                    { label: 'December', value: 12 },
-                  ]}
-                  error={errors?.month?.message}
                 />
               )}
             />

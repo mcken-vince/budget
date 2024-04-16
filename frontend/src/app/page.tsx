@@ -5,12 +5,13 @@ import { useMemo, useState } from 'react';
 import { TransactionsByMonth } from '@components';
 
 export default function Index() {
+  const year = new Date().getFullYear();
+  const startOfYear = new Date(year, 0, 1);
   const getDates = (count = 12) => {
-    const interval = 'month';
-    const dates: { month: string; year: number }[] = [];
+    const dates: { month: string; year: number; monthNumber: number }[] = [];
     let i = 0;
     while (i < count) {
-      const d = addxMonths(i);
+      const d = addxMonths(i, startOfYear);
       dates.push(getMonthYearObject(d));
       i++;
     }
@@ -21,11 +22,12 @@ export default function Index() {
   const [selectedDate, setSelectedDate] = useState<{
     month: string;
     year: number;
+    monthNumber: number;
   }>(getDates(1)[0]);
 
   const datesMatch = (
-    a: { month: string; year: number },
-    b: { month: string; year: number }
+    a: { month: string; year: number; monthNumber: number },
+    b: { month: string; year: number; monthNumber: number }
   ) => {
     return a.month === b.month && a.year === b.year;
   };
@@ -38,15 +40,30 @@ export default function Index() {
             Tab
           </label>
 
-          <select id="Tab" className="w-full rounded-md border-gray-200">
-            {dates.map((date) => (
-              <option
-                selected={datesMatch(date, selectedDate)}
-                key={date.month + '-' + date.year}
-              >
-                {date.month} {date.year}
-              </option>
-            ))}
+          <select
+            id="Tab"
+            className="w-full rounded-md border-gray-200"
+            value={selectedDate.month + ' ' + selectedDate.year}
+            onChange={(e) => {
+              const month = e.target.value.split(' ')[0];
+              const year = parseInt(e.target.value.split(' ')[1]);
+              const monthNumber =
+                new Date(`${month} 1, ${year}`).getMonth() + 1;
+              setSelectedDate({
+                month,
+                year,
+                monthNumber,
+              });
+            }}
+          >
+            {dates.map((date) => {
+              const dateString = date.month + ' ' + date.year;
+              return (
+                <option key={date.month + '-' + date.year} value={dateString}>
+                  {dateString}
+                </option>
+              );
+            })}
           </select>
         </div>
 

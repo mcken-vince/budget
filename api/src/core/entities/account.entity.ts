@@ -7,11 +7,14 @@ export class AccountEntity extends BaseEntity {
   @Column({ type: DataType.INTEGER, allowNull: false })
   idUser: number;
 
-  @Column({ type: DataType.STRING(50), allowNull: false })
+  @Column({ type: DataType.STRING(50), allowNull: false, unique: true })
   name: string;
 
   @Column({ type: DataType.STRING(25), allowNull: false })
   type: string;
+
+  // @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
+  // isDefault: boolean;
 
   @Column({ type: DataType.FLOAT, allowNull: false, defaultValue: 0 })
   initialBalance: number;

@@ -20,9 +20,11 @@ export class TransactionService {
       idUser,
     });
     if (newTransaction.idAccount) {
+      let amount = input.amount;
+      if (input.type === 'income') amount = -amount;
       await this._accountService.updateBalance(
         newTransaction.idAccount,
-        input.amount,
+        amount,
         idUser
       );
     }

@@ -11,7 +11,7 @@ import {
 import { BudgetService } from './budget.service';
 import { BudgetEntity } from '@entities';
 import { User } from '@decorators/user.decorator';
-import { DeleteResponse, BudgetDto } from '@dto';
+import { DeleteResponse, BudgetDto, BudgetItemDto } from '@dto';
 import { AuthGuard } from '@guards/auth.guard';
 @UseGuards(AuthGuard)
 @Controller('budget')
@@ -24,13 +24,14 @@ export class BudgetController {
     return this._budgetService.findAll(user.id);
   }
 
-  // @Get(':id')
-  // async findOne(
-  //   @Param('id') id: number,
-  //   @User() user
-  // ): Promise<TransactionEntity> {
-  //   return this._transactionService.findOne(id, user.id);
-  // }
+  @Get(':year/:month')
+  async findByDate(
+    @Param('year') year: number,
+    @Param('month') month: number,
+    @User() user
+  ): Promise<BudgetEntity> {
+    return this._budgetService.findByDate(year, month, user.id);
+  }
 
   @Post()
   async create(@Body() input: BudgetDto, @User() user): Promise<BudgetEntity> {
@@ -52,5 +53,10 @@ export class BudgetController {
     @User() user: any
   ): Promise<DeleteResponse> {
     return this._budgetService.delete(id, user.id);
+  }
+
+  @Post('item')
+  async createBudgetItem(@Body() input: BudgetItemDto, @User() user: any) {
+    return this._budgetService.createBudgetItem(input, user.id);
   }
 }

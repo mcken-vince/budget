@@ -13,6 +13,8 @@ export interface InputProps {
   autoComplete?: string;
   error?: string;
   autoFocus?: boolean;
+  min?: number;
+  max?: number;
 }
 
 export const Input = ({
@@ -25,6 +27,8 @@ export const Input = ({
   autoComplete,
   error,
   autoFocus,
+  min,
+  max,
 }: InputProps) => {
   return (
     <div>
@@ -43,6 +47,8 @@ export const Input = ({
         value={value}
         onChange={onChange}
         autoComplete={autoComplete}
+        min={min}
+        max={max}
       />
       <InputErrorMessage error={error} />
     </div>

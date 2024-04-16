@@ -9,6 +9,8 @@ export interface SelectProps {
   placeholder?: string;
   error?: string;
   options: { value: any; label: string }[];
+  hideBlankOption?: boolean;
+  blankOptionValue?: string | number | readonly string[] | undefined;
 }
 
 export const Select = ({
@@ -19,6 +21,8 @@ export const Select = ({
   options,
   placeholder,
   error,
+  hideBlankOption = false,
+  blankOptionValue = '',
 }: SelectProps) => {
   return (
     <div>
@@ -33,7 +37,11 @@ export const Select = ({
         onChange={onChange}
         value={value}
       >
-        <option value="">{placeholder ?? 'Please select'}</option>
+        {!hideBlankOption && (
+          <option value={blankOptionValue}>
+            {placeholder ?? 'Please select'}
+          </option>
+        )}
         {options?.map((option, idx) => (
           <option key={`select-${name}-option-${idx}`} value={option.value}>
             {option.label}

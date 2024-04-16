@@ -64,6 +64,7 @@ export default function TransactionsPage() {
       </SectionHeader>
 
       <TransactionsTable
+        accounts={accounts}
         categories={categories}
         transactions={transactions}
         updateTransaction={updateTransaction}

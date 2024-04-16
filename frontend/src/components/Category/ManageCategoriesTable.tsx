@@ -18,7 +18,8 @@ export const ManageCategoriesTable = ({
         { name: 'Name', getValue: (category) => category?.name },
         {
           name: 'Parent Category',
-          getValue: (category) => category?.parent?.name || '--',
+          getValue: (category) =>
+            categories.find((c) => c.id === category.idParent)?.name || '--',
         },
         {
           name: 'Created',

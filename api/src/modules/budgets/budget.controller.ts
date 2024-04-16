@@ -59,4 +59,12 @@ export class BudgetController {
   async createBudgetItem(@Body() input: BudgetItemDto, @User() user: any) {
     return this._budgetService.createBudgetItem(input, user.id);
   }
+
+  @Delete('item/:id')
+  async deleteBudgetItem(
+    @Param('id') id: number,
+    @User() user: any
+  ): Promise<DeleteResponse> {
+    return this._budgetService.deleteBudgetItem(id, user.id);
+  }
 }

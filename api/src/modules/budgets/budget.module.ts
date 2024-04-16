@@ -4,9 +4,10 @@ import { BudgetController } from './budget.controller';
 import { BudgetService } from './budget.service';
 import { budgetProviders } from './budget.providers';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { DatabaseModule } from '@database/database.module';
 
 @Module({
-  imports: [JwtModule],
+  imports: [JwtModule, DatabaseModule],
   controllers: [BudgetController],
   providers: [BudgetService, ...budgetProviders, JwtService],
 })
